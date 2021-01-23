@@ -1,0 +1,95 @@
+@font-face {
+    font-family: "DINBlack";
+    src: url("DIN-Black.ttf") format("woff")
+}
+
+@font-face {
+    font-family: "DINRegular";
+    src: url("DINMedium.ttf") format("woff")
+}
+
+@font-face {
+    font-family: "DINCondensed-Bold";
+    src: url("D-DINCondensed-Bold.ttf") format("woff")
+}
+
+.ak_card_header{
+    font-family: 'DINBlack';
+    border-radius: 0px !important;
+}
+
+.ak_card_subtitle{
+    color: #BE2131;
+    font-family: 'DINRegular';
+    font-weight: lighter;
+    margin-top: 1em;
+}
+
+.ak_room_title{
+    color: #1D78BA;
+    font-family: 'DINCondensed-Bold';
+    font-size: 24px;
+}
+
+.ak_room_speaker{
+    color: #1D78BA;
+    font-family: 'DINRegular';
+}
+
+.ak_room_descp{
+    font-family: 'DINRegular';
+}
+
+.ak_date{
+    color: #1D78BA;
+    font-family: 'DINRegular';
+    opacity: 0.9;
+}
+
+.ak_card_footer{
+    background: #E7E7E8;
+}
+
+.ak_card_title{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.card-room{
+    color: #ffffff;
+}
+
+.ak_card_body {
+    background: #ffffff;
+}
+
+.custom_border_left{
+    border-left-width: 25px;
+}
+
+@media(max-width:768px){
+    .ak_date{
+        color: #1D78BA;
+        font-family: 'DINRegular';
+        opacity: 0.9;
+        display: block;
+        float: unset !important;
+    }
+    .custom_border_left{
+        border-left-width: 15px;
+    }
+}
+
+.active{
+    color:#BE2131;
+}
+
+.more{
+    background: #E7E7E8 !important;
+    margin-bottom: 0px;
+}
+.mt-310{
+    padding: 5px 10px 10px 10px;
+}

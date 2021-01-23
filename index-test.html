@@ -1,0 +1,637 @@
+<!DOCTYPE HTML>
+  <html lang="">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/gsap.min.js"></script>
+    <script src="hero.0.9.0.js"></script>
+    <script src="fusion.0.9.0.js"></script>
+    </head>
+  <body>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  .hero-element {
+    position: absolute;
+  }
+  
+  
+        #guid_72a34ed0_219c_4496_a8f8_6375da73b65a {
+  position: absolute;
+  width: 375px;
+  height: 812px;
+  background-color: #fff;
+}
+#guid_0e1370eb_b5c4_4acc_8fd8_d16b41c9bfca {
+  width: 353px;
+  height: 27px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 199);
+  background-color: #e6e5e5;
+}
+#guid_ec256efb_ea89_4590_8f70_7b75c470eca0 {
+  width: 353px;
+  height: 27px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 493);
+  background-color: #e6e5e5;
+}
+#guid_2cf09fc9_ffd5_4901_9f48_2418c9746b8d {
+  width: 353px;
+  height: 11px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 281);
+  background-color: #e6e5e5;
+}
+#guid_68714f5c_87ab_49d2_ad9a_daac566f701a {
+  width: 353px;
+  height: 11px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 687);
+  background-color: #e6e5e5;
+}
+#guid_449efd1a_69bd_4c93_9e4e_55fefa6cc4a1 {
+  width: 353px;
+  height: 55px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 226);
+  background-color: #e6e5e5;
+}
+#guid_5a462d2f_50f6_46d0_9e13_e4125cff4598 {
+  width: 353px;
+  height: 55px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 520);
+  background-color: #e6e5e5;
+}
+#guid_4fd479de_4a35_4c4e_9b5a_38b6ea4252bf {
+  width: 353px;
+  height: 55px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 576);
+  background-color: #e6e5e5;
+}
+#guid_71c27a61_0740_410b_b4a4_6e28ab1e1ebb {
+  width: 353px;
+  height: 55px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 632);
+  background-color: #e6e5e5;
+}
+#guid_7823580a_84e7_4883_98a0_5a6d96e49866 {
+  width: 353px;
+  height: 55px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 632);
+  background-color: #e6e5e5;
+}
+#guid_d76b57bf_2892_413e_87af_a91c805a9407 {
+  width: 375px;
+  height: 40px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  background-color: #faaf06;
+}
+#guid_4dbf11f5_bc4f_4316_811c_413ede7a4a1c {
+  width: 375px;
+  height: 40px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 0, 294);
+  background-color: #a7c970;
+}
+#guid_3376ad44_770d_414b_b880_f5974c55de6f {
+  width: 123px;
+  font-family: DIN Black;
+  font-size: 20px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 22);
+}
+#guid_69f0ba26_11ae_411b_ac8e_a62003d0362b {
+  width: 123px;
+  font-family: DIN Black;
+  font-size: 20px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 22, 316);
+}
+#guid_af95a788_7fbd_405c_a431_fbd08516bffe {
+  width: 22px;
+  height: 252px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 0, 40);
+  background-color: #faaf29;
+}
+#guid_faea59a8_428e_408a_9100_a2b99150e575 {
+  width: 22px;
+  height: 364px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 0, 334);
+  background-color: #a7c970;
+}
+#guid_cdb4c274_62f3_4fcc_be75_c6bf5c322c66 {
+  width: 131px;
+  font-family: DIN Black;
+  font-size: 16px;
+  color: #cb3434;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 51);
+}
+#guid_051ae401_d696_467e_bca7_9d1be9e6ea50 {
+  width: 131px;
+  font-family: DIN Black;
+  font-size: 16px;
+  color: #cb3434;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 345);
+}
+#guid_72e60447_4629_4422_9e59_564475e77fcb {
+  width: 68px;
+  font-family: DIN Black;
+  font-size: 16px;
+  color: #cb3434;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 210);
+}
+#guid_58cbdeae_467d_45d4_a155_5f5a8c8a2027 {
+  width: 68px;
+  font-family: DIN Black;
+  font-size: 16px;
+  color: #cb3434;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 504);
+}
+#guid_2afce7d3_4157_41f5_880e_ec4db8408afe {
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 316, 94.99900817871094);
+}
+#guid_181f2903_a60a_47c9_bab3_753b12d17a51 {
+  width: 46.247px;
+  height: 20.434px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 0, 0.0009975433349609375);
+  background-color: #622f88;
+}
+#guid_9378edf9_bac2_4a4f_8a78_729e26d5b5a6 {
+  width: 29px;
+  font-family: DIN-Black;
+  font-size: 11.898099899291992px;
+  color: #fff;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 10.228515625, 5.11956787109375);
+}
+#guid_e2da7dcb_7c27_4adc_bbab_d4d0455594e8 {
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 316, 388.9990234375);
+}
+#guid_e6fed857_d2c1_4db0_8291_f93d9f46ce71 {
+  width: 46.247px;
+  height: 20.434px;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 0, 0.0009975433349609375);
+  background-color: #622f88;
+}
+#guid_34023bdb_feb2_4710_9748_591784972906 {
+  width: 29px;
+  font-family: DIN-Black;
+  font-size: 11.898099899291992px;
+  color: #fff;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 10.228515625, 5.11956787109375);
+}
+#guid_97d2fd07_2198_4f38_bf92_a316e365480f {
+  width: 332px;
+  font-family: DINCondensed-Bold;
+  font-size: 10px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 123);
+}
+#guid_6a5383e9_a3cb_4039_b6df_45749b6b2b2b {
+  width: 332px;
+  font-family: DINCondensed-Bold;
+  font-size: 10px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 417);
+}
+#guid_c627b21e_5af8_475f_aa80_0246fea057ac {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 81);
+}
+#guid_11dd731a_34bd_4e81_8e8e_b222f670d4bd {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 375);
+}
+#guid_dbd4a49b_76f6_49fd_b8cb_9979c457e6a8 {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 240);
+}
+#guid_f393e533_1ffd_4603_b0e1_fcc7cf87a3a7 {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 534);
+}
+#guid_90d346cd_14c2_4eb0_8758_2c61edb0ac2f {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 590);
+}
+#guid_0f47596a_f239_4f8f_a6eb_0d05a7e7d28d {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 646);
+}
+#guid_bec58862_f682_43ef_82a0_b4082ffe6dae {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 646);
+}
+#guid_925eb747_756d_4d76_987d_5089f3cadc25 {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 81);
+}
+#guid_ecfbef89_f10c_4a21_a6a5_7045898e5326 {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 375);
+}
+#guid_c101edbb_04e4_4870_a6d5_3a69807b0f9b {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 240);
+}
+#guid_691787a3_731c_4b1e_8330_ca0cad1ec6c6 {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 534);
+}
+#guid_de445967_ac1e_4619_b177_d7a90850b81a {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 590);
+}
+#guid_bb98b2ea_cc3e_4784_9950_6387c52c225a {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 646);
+}
+#guid_42c907da_bdee_4d37_8274_0e1a98337223 {
+  width: 108px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #5875b5;
+  text-align: right;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 257, 646);
+}
+#guid_50692b91_41d9_48e4_8b78_4be0987f59a1 {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 95);
+}
+#guid_c17e1e10_fc4f_42c5_9f92_31fb8955b18f {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 389);
+}
+#guid_9339a060_7844_41ec_84ca_c94a13a68121 {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 254);
+}
+#guid_a3ca7f45_d314_4efe_ae4d_e19d85002eb9 {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 548);
+}
+#guid_0e57cc79_2f06_45d2_bdbd_d749670e164a {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 604);
+}
+#guid_895ea651_87ed_4cb5_9341_fba5132cd3de {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 660);
+}
+#guid_19fcbda1_a9d8_4167_81eb_926c2e9406c8 {
+  width: 219px;
+  font-family: DINCondensed-Bold;
+  font-size: 12px;
+  color: #000;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 33, 660);
+}
+#guid_18b068cc_b838_460a_a8b4_0d2f41373b48 {
+  width: 19px;
+  font-family: DIN Black;
+  font-size: 6px;
+  color: #cb3434;
+  font-weight: 400;
+  transform-origin: 50% 50%;
+  transform: matrix(1, 0, 0, 1, 191, 285);
+}
+
+      
+
+  </style>
+
+  
+
+        <!-- /////////////////////// -->
+        <!-- Player -->
+        <div class="wrapper" style="position: relative; width: 100%; height: 100%;">
+          <div id="player" class="fusion--player" style="width: 100%; height: 100%; background-color: #EEE;">
+            <div class="fusion--viewport">
+            
+            
+
+            
+            <div class="fusion--scene fusion--scene--default scene-guid_72a34ed0_219c_4496_a8f8_6375da73b65a">
+              <div class="fusion--scene--content">
+                
+<div id="guid_72a34ed0_219c_4496_a8f8_6375da73b65a" class="artboard scene" >
+<div id="guid_0e1370eb_b5c4_4acc_8fd8_d16b41c9bfca" class="hero-element" >
+</div>
+<div id="guid_ec256efb_ea89_4590_8f70_7b75c470eca0" class="hero-element" >
+</div>
+<div id="guid_2cf09fc9_ffd5_4901_9f48_2418c9746b8d" class="hero-element" >
+</div>
+<div id="guid_68714f5c_87ab_49d2_ad9a_daac566f701a" class="hero-element" >
+</div>
+<div id="guid_449efd1a_69bd_4c93_9e4e_55fefa6cc4a1" class="hero-element" >
+</div>
+<div id="guid_5a462d2f_50f6_46d0_9e13_e4125cff4598" class="hero-element" >
+</div>
+<div id="guid_4fd479de_4a35_4c4e_9b5a_38b6ea4252bf" class="hero-element" >
+</div>
+<div id="guid_71c27a61_0740_410b_b4a4_6e28ab1e1ebb" class="hero-element" >
+</div>
+<div id="guid_7823580a_84e7_4883_98a0_5a6d96e49866" class="hero-element" >
+</div>
+<div id="guid_d76b57bf_2892_413e_87af_a91c805a9407" class="hero-element" >
+</div>
+<div id="guid_4dbf11f5_bc4f_4316_811c_413ede7a4a1c" class="hero-element" >
+</div>
+<div id="guid_3376ad44_770d_414b_b880_f5974c55de6f" class="hero-element" >Boardroom 1
+</div>
+<div id="guid_69f0ba26_11ae_411b_ac8e_a62003d0362b" class="hero-element" >Boardroom 2
+</div>
+<div id="guid_af95a788_7fbd_405c_a431_fbd08516bffe" class="hero-element" >
+</div>
+<div id="guid_faea59a8_428e_408a_9100_a2b99150e575" class="hero-element" >
+</div>
+<div id="guid_cdb4c274_62f3_4fcc_be75_c6bf5c322c66" class="hero-element" >HAPPENING NOW
+</div>
+<div id="guid_051ae401_d696_467e_bca7_9d1be9e6ea50" class="hero-element" >HAPPENING NOW
+</div>
+<div id="guid_72e60447_4629_4422_9e59_564475e77fcb" class="hero-element" >UP NEXT
+</div>
+<div id="guid_58cbdeae_467d_45d4_a155_5f5a8c8a2027" class="hero-element" >UP NEXT
+</div>
+<div id="guid_2afce7d3_4157_41f5_880e_ec4db8408afe" class="hero-element" >
+<div id="guid_181f2903_a60a_47c9_bab3_753b12d17a51" class="hero-element" >
+</div>
+<div id="guid_9378edf9_bac2_4a4f_8a78_729e26d5b5a6" class="hero-element" >JOIN
+</div>
+</div>
+<div id="guid_e2da7dcb_7c27_4adc_bbab_d4d0455594e8" class="hero-element" >
+<div id="guid_e6fed857_d2c1_4db0_8291_f93d9f46ce71" class="hero-element" >
+</div>
+<div id="guid_34023bdb_feb2_4710_9748_591784972906" class="hero-element" >JOIN
+</div>
+</div>
+<div id="guid_97d2fd07_2198_4f38_bf92_a316e365480f" class="hero-element" >Both running a business and game design are marathons, not sprints. Under the best of circumstances, pacing yourself, avoiding burnout, maintaining your motivation and perspective, etc. can be difficult. Doing it during a crisis can be daunting. 2020 has pushed all of us to the limit even without the turmoil it has caused the game industry. Our panel will discuss the challenges of working through COVID-19 and strategies they’ve used to cope with crises. 
+</div>
+<div id="guid_6a5383e9_a3cb_4039_b6df_45749b6b2b2b" class="hero-element" >Both running a business and game design are marathons, not sprints. Under the best of circumstances, pacing yourself, avoiding burnout, maintaining your motivation and perspective, etc. can be difficult. Doing it during a crisis can be daunting. 2020 has pushed all of us to the limit even without the turmoil it has caused the game industry. Our panel will discuss the challenges of working through COVID-19 and strategies they’ve used to cope with crises. 
+</div>
+<div id="guid_c627b21e_5af8_475f_aa80_0246fea057ac" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_11dd731a_34bd_4e81_8e8e_b222f670d4bd" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_dbd4a49b_76f6_49fd_b8cb_9979c457e6a8" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_f393e533_1ffd_4603_b0e1_fcc7cf87a3a7" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_90d346cd_14c2_4eb0_8758_2c61edb0ac2f" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_0f47596a_f239_4f8f_a6eb_0d05a7e7d28d" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_bec58862_f682_43ef_82a0_b4082ffe6dae" class="hero-element" >D075 - Managing Work While the World Is Chaos
+</div>
+<div id="guid_925eb747_756d_4d76_987d_5089f3cadc25" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_ecfbef89_f10c_4a21_a6a5_7045898e5326" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_c101edbb_04e4_4870_a6d5_3a69807b0f9b" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_691787a3_731c_4b1e_8330_ca0cad1ec6c6" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_de445967_ac1e_4619_b177_d7a90850b81a" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_bb98b2ea_cc3e_4784_9950_6387c52c225a" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_42c907da_bdee_4d37_8274_0e1a98337223" class="hero-element" >Saturday, 7:00PM - 8:00PM
+</div>
+<div id="guid_50692b91_41d9_48e4_8b78_4be0987f59a1" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_c17e1e10_fc4f_42c5_9f92_31fb8955b18f" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_9339a060_7844_41ec_84ca_c94a13a68121" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_a3ca7f45_d314_4efe_ae4d_e19d85002eb9" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_0e57cc79_2f06_45d2_bdbd_d749670e164a" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_895ea651_87ed_4cb5_9341_fba5132cd3de" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_19fcbda1_a9d8_4167_81eb_926c2e9406c8" class="hero-element" >Beth Rimmels, Nicole Lindroos, Jaym Gates
+</div>
+<div id="guid_18b068cc_b838_460a_a8b4_0d2f41373b48" class="hero-element" >MORE
+</div>
+</div>
+              </div>
+            </div> 
+
+
+      
+
+            </div>
+          </div>
+        </div>
+
+      
+
+
+  <!-- Hero/Fusion Player -->
+  <script>
+    
+      document.addEventListener('DOMContentLoaded', function () {
+        window.player = new fusion.Player({
+          id: 'player',
+          // debug: true, 
+          scenes: [
+            
+            { 
+              id: 'guid_72a34ed0_219c_4496_a8f8_6375da73b65a', 
+              type: 'flat', 
+              width: 375, 
+              height: 812,
+              fit: true, 
+              center: true,
+              plugins: [
+                // {id: 'visualDebugger', options: {centerV: true}},
+              ]
+            },              
+      
+          ]
+        });
+        player.loadScene('guid_72a34ed0_219c_4496_a8f8_6375da73b65a');      
+      });
+    
+  </script>
+
+  <!-- Hero Scenes -->
+  <script>
+    
+      //---
+      // Scene: guid_72a34ed0_219c_4496_a8f8_6375da73b65a
+      document.addEventListener('DOMContentLoaded', function () {
+        var log = console.log;
+        var player = window.player;
+        var scene = window.player.getScene('guid_72a34ed0_219c_4496_a8f8_6375da73b65a');
+    
+      }); // Scene end    
+    
+  </script>
+
+  <!-- Hero Timelines -->
+  <script>
+    
+    //---
+    // Scene: guid_72a34ed0_219c_4496_a8f8_6375da73b65a
+    document.addEventListener('DOMContentLoaded', function () {
+      var player = window.player;
+      var scene = window.player.getScene('guid_72a34ed0_219c_4496_a8f8_6375da73b65a');
+      var log = console.log;
+      var tl = gsap.timeline({paused: true});
+      scene.timeline = tl;
+      
+    });
+    
+  </script>
+
+  
+  
+</body>
