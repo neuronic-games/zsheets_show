@@ -52,13 +52,16 @@
       let time = (iTime == null ? moment().format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
       let current = moment(new Date(date + ' ' + time));
 
+
       var moreLess = 'More';
 
       $(".image_id").css("display", "block");
 
       $.ajax({
         // url: "https://api.jsonbin.io/b/5fa2a27dce4aa2289555af31/9",
-        url: "./data-metatopia-2020.json",
+         //url: "https://sheetdb.io/api/v1/kulkorgjwk4xf",
+         url: "https://sheetdb.io/api/v1/69vvn6smak6n0",
+        //url: "./data-metatopia-2020.json",
         cache: false,
         success: function(response){
 
@@ -67,19 +70,17 @@
             var todayArray = [];
             var todayArrayNext = [];
 
-            response.events.forEach(q => {
-
+             response.forEach(q => {
+              console.log(q.code)
               if (moment(new Date(q.end)) >= current && 
                   moment(new Date(q.start)).format(DATE_FORMAT) == current.format(DATE_FORMAT)) {
-                
                 // This event is for the given day, and is either happening now, or later in the day
                 todayArray.push(q);
+                
               }
-
             });
-
+      
               if(room != null) {
-
                 var todayArrayNext = todayArray.filter(item => item.location.toLowerCase().indexOf(room) > -1);
               }
               
@@ -90,11 +91,11 @@
                 result[value.location] = result[value.location] || []; 
                 result[value.location].push({ code:value.code,
                                             name: value.name, 
-                                            speakers: value.speakers,
+                                            speakers: value.presenters,
                                             desc:value.desc,
                                             start:value.start,
                                             end:value.end,
-                                            rating:value.rating,
+                                            rating:value.info,
                                             location:value.location,
                                             link:value.link
                                           
@@ -186,9 +187,6 @@
                                    
                                     : ``
                                   }
-                                  
-
-
                                   `
                             }).join('')
                         }
