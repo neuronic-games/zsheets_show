@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metatopia 2020</title>
+    <title>Earshot Events</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -40,18 +40,21 @@
         return result;
       }
       
-      let colors = ['#41697E','#1D78BA','#8FC448','#50369D','#EE8888','#5C6DD7','#E682F6','#0F6F8E','#CC9E5B','#E65171']
+      let colors = ['#41697E','#1D78BA','#8FC448','#50369D','#EE8888','#5C6DD7','#E682F6','#0F6F8E','#CC9E5B','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171'];
  
-      let room = findGetParameter('room');
+      let room = findGetParameter('loc');
       let iDate = findGetParameter('date');
       let iTime = findGetParameter('time');
 
+      let timeZoneOffset = -5;
       let TIME_FORMAT = 'MM/DD/YYYY HH:mm';
       let DATE_FORMAT = 'MM/DD/YYYY';
-      let date = (iDate == null ? moment().format(DATE_FORMAT) : moment(new Date(iDate)).format(DATE_FORMAT));
-      let time = (iTime == null ? moment().format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
+      let DISP_FORMAT = 'MM/DD ddd hh:mm a';
+      let date = (iDate == null ? moment(new Date()).format(DATE_FORMAT) : moment(new Date(iDate)).format(DATE_FORMAT));
+      let time = (iTime == null ? moment(new Date()).format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
       let current = moment(new Date(date + ' ' + time));
 
+      var utc = new Date();
 
       var moreLess = 'More';
 
@@ -70,12 +73,24 @@
             var todayArray = [];
             var todayArrayNext = [];
 
-             response.forEach(q => {
-              console.log(q.code)
-              if (moment(new Date(q.end)) >= current && 
-                  moment(new Date(q.start)).format(DATE_FORMAT) == current.format(DATE_FORMAT)) {
+            response.forEach(q => {
+              let data = { 
+                code: q.Code,
+                name: q.Event, 
+                speakers: q.Presenters,
+                desc: q.Description,
+                start: q.Start,
+                end: q.End,
+                rating: q.Info,
+                location: q.Location,
+                link: q.Link
+              };
+                
+              // console.log(data.code);
+              if (moment(new Date(data.end)) >= current && 
+                  moment(new Date(data.start)).format(DATE_FORMAT) == current.format(DATE_FORMAT)) {
                 // This event is for the given day, and is either happening now, or later in the day
-                todayArray.push(q);
+                todayArray.push(data);
                 
               }
             });
@@ -87,17 +102,18 @@
               var todayArrayNext = room != null ? todayArrayNext : todayArray;
               var sortedArray  = todayArrayNext.sort((a,b) => new Date(a.start) - new Date(b.start));
               
-              var output = sortedArray.reduce(function(result, value) { 
-                result[value.location] = result[value.location] || []; 
-                result[value.location].push({ code:value.code,
+              var output = sortedArray.reduce(function(result, value) {
+                var location = value.location; 
+                result[location] = result[location] || []; 
+                result[location].push({ code:value.code,
                                             name: value.name, 
-                                            speakers: value.presenters,
-                                            desc:value.desc,
-                                            start:value.start,
-                                            end:value.end,
-                                            rating:value.info,
-                                            location:value.location,
-                                            link:value.link
+                                            speakers: value.speakers,
+                                            desc: value.desc,
+                                            start: value.start,
+                                            end: value.end,
+                                            rating: value.rating,
+                                            location: value.location,
+                                            link: value.link
                                           
                 });
                 return result; 
@@ -112,6 +128,8 @@
                 
                 let shownCount = 0;
                 let lastKey = "";
+                
+                $('.root').append(`<div class="card-title ak_card_subtitle mt-3">${current.format(DISP_FORMAT)}</div>`);
                 
                 for(let [index, [key, value]] of entries.entries()){
 
@@ -200,7 +218,8 @@
 
                 } 
 
-              }else{
+              } else {
+                $('.root').append(`<div class="card-title ak_card_subtitle mt-3">${current.format(DISP_FORMAT)}</div>`);
                 $('.root').append(
                 `
                   <h1 class="text-center">NO EVENTS</h1>
