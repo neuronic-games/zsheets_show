@@ -43,33 +43,38 @@
       }
       
       function showStatus(props) {
-        if (props.status == "Looking") {
-          return `
-            <img src="https://media.tenor.com/images/8b5f93c8693a58f564cf9c247db9e39f/tenor.gif" class="flag" alt="Looking for Players">
-            <span class="capacity">${props.count}/${props.capacity}</span>
-            `;
+        var capicity = (props.count && props.capacity) ? `<span class="status">${props.count}/${props.capacity}</span>` : "";
+        var emoji = (props.status.toLowerCase() == "looking") ? `<img src="https://media.tenor.com/images/8b5f93c8693a58f564cf9c247db9e39f/tenor.gif" class="flag" alt="Looking for Players">` : "";
+        if (props.status && props.status.trim().length) {
+          return `${emoji} <span class="status">(${props.status.toUpperCase()})</span> ${capicity}`;
         }
         return "";
       }
       
-      let colors = [ 'ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ];
+      const colors = [ 'ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ];
       
       // Locations in this list will be sorted first
-      let locSorting = ['Twitch'];
+      const locSorting = ['Twitch'];
  
       let room = findGetParameter('loc');
       let iDate = findGetParameter('date');
       let iTime = findGetParameter('time');
 
-      let timeZoneOffset = -5;
+      // The event time is not UTC, so we will beed to use timeZoneOffset to find the correct time.
+      let utc = new Date();
+      let currentUtcStr = "".concat(utc.getUTCMonth(), utc.getUTCFullYear(), "-", utc.getUTCMonth()+1, "-", utc.getUTCDate(),
+        " ", utc.getUTCHours(), ":", utc.getUTCMinutes(), ":", utc.getUTCSeconds());
+      let currentUtc = moment(currentUtcStr);
+      const timeZoneOffset = -5;  // EDT
+      let currentAdj = currentUtc.add(timeZoneOffset, "hours");
+
       let TIME_FORMAT = 'MM/DD/YYYY HH:mm';
       let DATE_FORMAT = 'MM/DD/YYYY';
       let DISP_FORMAT = 'MM/DD ddd hh:mm a';
-      let date = (iDate == null ? moment(new Date()).format(DATE_FORMAT) : moment(new Date(iDate)).format(DATE_FORMAT));
-      let time = (iTime == null ? moment(new Date()).format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
+      let date = (iDate == null ? moment(currentAdj).format(DATE_FORMAT) : moment(new Date(iDate)).format(DATE_FORMAT));
+      let time = (iTime == null ? moment(currentAdj).format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
       let current = moment(new Date(date + ' ' + time));
 
-      var utc = new Date();
 
       var moreLess = 'More';
 
@@ -165,10 +170,16 @@
                 let shownCount = 0;
                 let lastKey = "";
                 
-                $('.root').append(`<div class="card-title ak_card_subtitle mt-3">${current.format(DISP_FORMAT)}</div>`);
+                $('.root').append(`<div class="card-title ak_card_subtitle mt-3"> ${currentAdj.format(DISP_FORMAT)}</div>`);
                 
                 for(let [index, [key, value]] of entries.entries()){
                   color = colors[index % colors.length];
+                  let viewBtn = value[0].link ? `                            
+                    <a href=${`${value[0].link}`} target="_blank">
+                    <button type="button" class="btn btn-outline-light float-right mt-310">
+                      VIEW
+                      </button>
+                  </a>` : "";
                   $('.root').append(  
                       `
                         <div class="card custom_border_left mt-5" style="border-left-color:#${color}">
@@ -176,11 +187,8 @@
 
                             <h4 class="card-room d-inline">${key}</h4>
                             
-                            <a href=${`${value[0].link}`} target="_blank">
-                            <button type="button" class="btn btn-outline-light float-right mt-310">
-                              JOIN
-                              </button>
-                            </a>
+                            ${viewBtn}
+                            
                           </div>
                           
                           ${
