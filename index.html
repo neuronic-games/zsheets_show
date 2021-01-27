@@ -45,14 +45,14 @@
       function showStatus(props) {
         if (props.status == "Looking") {
           return `
-            <img src="https://media.tenor.com/images/8b5f93c8693a58f564cf9c247db9e39f/tenor.gif" class="flag">
+            <img src="https://media.tenor.com/images/8b5f93c8693a58f564cf9c247db9e39f/tenor.gif" class="flag" alt="Looking for Players">
             <span class="capacity">${props.count}/${props.capacity}</span>
             `;
         }
         return "";
       }
       
-      let colors = ['#41697E','#1D78BA','#8FC448','#50369D','#EE8888','#5C6DD7','#E682F6','#0F6F8E','#CC9E5B','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171','#E65171'];
+      let colors = [ 'ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ];
       
       // Locations in this list will be sorted first
       let locSorting = ['Twitch'];
@@ -168,11 +168,11 @@
                 $('.root').append(`<div class="card-title ak_card_subtitle mt-3">${current.format(DISP_FORMAT)}</div>`);
                 
                 for(let [index, [key, value]] of entries.entries()){
-
+                  color = colors[index % colors.length];
                   $('.root').append(  
                       `
-                        <div class="card custom_border_left mt-5" style="border-left-color:${ color = colors[index]}">
-                          <div class="card-header ak_card_header" style="background:${color}">
+                        <div class="card custom_border_left mt-5" style="border-left-color:#${color}">
+                          <div class="card-header ak_card_header" style="background:#${color}">
 
                             <h4 class="card-room d-inline">${key}</h4>
                             
