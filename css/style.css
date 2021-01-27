@@ -93,3 +93,14 @@
 .mt-310{
     padding: 5px 10px 10px 10px;
 }
+
+.flag {
+  width: 30px;
+  height: 30px;
+  vertical-align: top;
+}
+
+.capacity {
+  color: #BE2131;
+  font-family: 'DINRegular';  
+}
