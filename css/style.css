@@ -92,6 +92,7 @@
 }
 .mt-310{
     padding: 5px 10px 10px 10px;
+    margin: 0px 10px 0px 0px;
 }
 
 .flag {
@@ -103,4 +104,17 @@
 .status {
   color: #BE2131;
   font-family: 'DINRegular';  
+}
+
+.cal_summary {
+  color: #BE2131;
+  font-family: 'DINRegular';  
+}
+
+.info {
+  font-weight: bold;
+}
+
+.tabletop-sim {
+  font-style: italic;
 }

@@ -44,14 +44,52 @@
       
       function showStatus(props) {
         var capicity = (props.count && props.capacity) ? `<span class="status">${props.count}/${props.capacity}</span>` : "";
-        var emoji = (props.status.toLowerCase() == "looking") ? `<img src="https://media.tenor.com/images/8b5f93c8693a58f564cf9c247db9e39f/tenor.gif" class="flag" alt="Looking for Players">` : "";
+        var emoji = (props.status.toLowerCase() == "looking for players") ? `<img src="https://media.tenor.com/images/8b5f93c8693a58f564cf9c247db9e39f/tenor.gif" class="flag" alt="Looking for Players">` : "";
         if (props.status && props.status.trim().length) {
           return `${emoji} <span class="status">(${props.status.toUpperCase()})</span> ${capicity}`;
         }
         return "";
       }
       
-      const colors = [ 'ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ];
+      function isValidUrl(string) {
+        let url;
+  
+        try {
+          url = new URL(string);
+        } catch (_) {
+          return null;
+        }
+
+        return url.protocol;
+      }
+
+      function showCalLinks() {
+        let links = "<a href=/events>NOW</a>";
+
+        for (var key in calLinks) {
+          links = links.concat(" | <a href=", calLinks[key], ">", key, "</a>");
+        }
+        
+        let render = `
+          <div class="card custom_border_left mt-5" style="border-left-color:red">
+            <div class="card-header ak_card_header" style="background:#cccccc">
+
+              <div class="float-left">${currentAdj.format(DISP_FORMAT)}</div>
+              <div class="float-right">
+                ${links}
+              </div>
+            </div>
+          </div>
+          `;
+        return render;
+      }
+      
+      const colors = [ 'ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', '33cc99', '339999', '339966', '33cc99' ];
+      const calLinks = {
+        "29": "/events?date=1/29/2021",
+        "30": "/events?date=1/30/2021",
+        "31": "/events?date=1/31/2021",
+      };
       
       // Locations in this list will be sorted first
       const locSorting = ['Twitch'];
@@ -70,11 +108,10 @@
 
       let TIME_FORMAT = 'MM/DD/YYYY HH:mm';
       let DATE_FORMAT = 'MM/DD/YYYY';
-      let DISP_FORMAT = 'MM/DD ddd hh:mm a';
+      let DISP_FORMAT = 'MM/DD dddd hh:mm A';
       let date = (iDate == null ? moment(currentAdj).format(DATE_FORMAT) : moment(new Date(iDate)).format(DATE_FORMAT));
       let time = (iTime == null ? moment(currentAdj).format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
-      let current = moment(new Date(date + ' ' + time));
-
+      let current = iTime ? moment(new Date(date + ' ' + time)) : moment(new Date(date));
 
       var moreLess = 'More';
 
@@ -101,12 +138,16 @@
                 desc: q.Description,
                 start: q.Start,
                 end: q.End,
-                rating: q.Info,
+                info: q.Info,
                 location: q.Location,
-                link: q.Link,
                 capacity: q.Capacity,
                 count: q.Count,
-                status: q.Status
+                status: q.Status,
+                link1: q.Link1,
+                url1: q.Url1,
+                link2: q.Link2,
+                url2: q.Url2,
+                tabletopSim: q.TabletopSim,
               };
                 
               // console.log(data.code);
@@ -150,12 +191,16 @@
                   desc: value.desc,
                   start: value.start,
                   end: value.end,
-                  rating: value.rating,
+                  info: value.info,
                   location: value.location,
-                  link: value.link,
                   capacity: value.capacity,
                   count: value.count,
                   status: value.status,
+                  link1: value.link1,
+                  url1: value.url1,
+                  link2: value.link2,
+                  url2: value.url2,
+                  tabletopSim: value.tabletopSim,
                 });
                 return result; 
               }, {});
@@ -170,16 +215,29 @@
                 let shownCount = 0;
                 let lastKey = "";
                 
-                $('.root').append(`<div class="card-title ak_card_subtitle mt-3"> ${currentAdj.format(DISP_FORMAT)}</div>`);
+                $('.root').append(`${showCalLinks()}`);
                 
                 for(let [index, [key, value]] of entries.entries()){
                   color = colors[index % colors.length];
-                  let viewBtn = value[0].link ? `                            
-                    <a href=${`${value[0].link}`} target="_blank">
-                    <button type="button" class="btn btn-outline-light float-right mt-310">
-                      VIEW
-                      </button>
-                  </a>` : "";
+                  
+                  let button1 = value[0].url1 ? `                            
+                    <a href=${`${value[0].url1}`} target="_blank">
+                      <button type="button" class="btn btn-outline-light float-right mt-310">${value[0].link1}</button>
+                    </a>` : "";
+                    
+                  let button2 = value[0].url2 ? `                            
+                    <a href=${`${value[0].url2}`} target="_blank">
+                      <button type="button" class="btn btn-outline-light float-right mt-310">${value[0].link2}</button>
+                    </a>` : "";
+                    
+                  let tabletopSim = value[0].tabletopSim ? 
+                    `
+                      <div class="tabletop-sim float-right">Tabletop Sim: ${value[0].tabletopSim}</div>
+                    ` : "";
+
+                  let shownHappeningNow = false;
+                  let shownHappening = 0;
+                    
                   $('.root').append(  
                       `
                         <div class="card custom_border_left mt-5" style="border-left-color:#${color}">
@@ -187,7 +245,8 @@
 
                             <h4 class="card-room d-inline">${key}</h4>
                             
-                            ${viewBtn}
+                            ${button2}
+                            ${button1}
                             
                           </div>
                           
@@ -200,13 +259,19 @@
 
                               var isUpNext = moment(new Date(que.start)) >= current;
                               
-                              var isPassed = moment(new Date(que.end)) < current;
+                              var isPassed = moment(new Date(que.end)) <= current;
                               
                               if (lastKey != key) {
                                 shownCount = 0;
+                                shownHappening = 0;
+                                shownHappeningNow = false;
                               }
                               if (!isHappeningNow && isSameDay && isUpNext) {
                                 shownCount += 1;
+                              }
+                              if (isHappeningNow && shownCount == 0) {
+                                shownHappeningNow = true;
+                                shownHappening += 1;
                               }
                               lastKey = key;
 
@@ -224,11 +289,11 @@
                                      <div class="${ isHappeningNow && isSameDay   ? 'card-body' : 'card-footer ak_card_footer' } ${index > 1 ? `hidden_card_${key.replace(/\s/g, '')}` : '' }" 
                                       style="${(isSameDay && isPassed) || shownCount > 1 ? 'display:none' : 'display:block'}">
 
-                                      ${isHappeningNow && isSameDay ?
+                                      ${isHappeningNow && shownHappening < 2 && isSameDay ?
                                         `<h5 class="card-title ak_card_subtitle mt-3">HAPPENING NOW</h5>`
                                         : ``
                                       }
-                                      ${!isHappeningNow && isUpNext && isSameDay && shownCount == 1 ?
+                                      ${!isHappeningNow && shownHappeningNow && isUpNext && isSameDay && shownCount == 1 ?
                                         `<h5 class="card-title ak_card_subtitle mt-3">UP NEXT</h5>`
                                         : ``
                                       }
@@ -239,11 +304,12 @@
                                       <br>
 
                                       <b style="color: black !important;">${que.speakers}</b><br>
-                                      <p class="ak_room_descp mt-3 d-inline">
+                                      <div class="ak_room_descp mt-3">
                                         ${que.desc}
-                                      </p>
-                                      —
-                                      <b>${que.rating}</b>
+                                      </div>
+                                      
+                                      <div class="info float-left">${que.info}</div>
+                                      ${tabletopSim}
                                       </div>
                                         
                                       `
