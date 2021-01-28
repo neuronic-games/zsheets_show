@@ -152,7 +152,7 @@
                 
               // console.log(data.code);
 
-              if (data.start) {
+              if (data.location && data.name && data.start && data.end) {
                 let date = new Date(data.start);
                 let dateKey = moment(date).format(DATE_FORMAT);
 
