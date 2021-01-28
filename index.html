@@ -65,11 +65,12 @@
 
       function showCalLinks() {
         let links = "<a href=/events>NOW</a>";
+        let sortedLinks = new Map([...firstEvents.entries()].sort((a, b) => a[1] - b[1]));
 
-        for (let key in firstEvents) {
+        sortedLinks.forEach((date, key) => {
           let day = moment(key).format("DD");
           links = links.concat(" | <a href=/events?date=", key, ">", day, "</a>");
-        }
+        });
         
         let render = `
           <div class="card custom_border_left mt-5" style="border-left-color:red">
@@ -162,19 +163,17 @@
                 }
               
                 // Store the first events of the day to create a summary calendar link
-                if (firstEvents[dateKey]) {
+                if (firstEvents.has(dateKey)) {
                   if (date < firstEvents[dateKey]) {
-                    firstEvents[dateKey] = date;
+                    firstEvents.set(dateKey, date);
                   }
                 } else {
-                  firstEvents[dateKey] = date;
+                  firstEvents.set(dateKey, date);
                 }
               }
               
             });
             
-            console.log(firstEvents);
-      
               if(room != null) {
                 var todayArrayNext = todayArray.filter(item => item.location.toLowerCase().indexOf(room) > -1);
               }
