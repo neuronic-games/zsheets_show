@@ -145,7 +145,8 @@
                 url1: q.Url1,
                 link2: q.Link2,
                 url2: q.Url2,
-                tabletopSim: q.TabletopSim,
+                platform: q.Platform,
+                accessInfo: q.AccessInfo,
               };
                 
               // console.log(data.code);
@@ -215,7 +216,8 @@
                   url1: value.url1,
                   link2: value.link2,
                   url2: value.url2,
-                  tabletopSim: value.tabletopSim,
+                  platform: value.platform,
+                  accessInfo: value.accessInfo,
                 });
                 return result; 
               }, {});
@@ -245,9 +247,9 @@
                       <button type="button" class="btn btn-outline-light float-right mt-310">${value[0].link2}</button>
                     </a>` : "";
                     
-                  let tabletopSim = value[0].tabletopSim ? 
+                  let platform = value[0].platform ? 
                     `
-                      <div class="tabletop-sim float-right">Tabletop Sim: ${value[0].tabletopSim}</div>
+                      <div class="tabletop-sim float-right">${value[0].platform}: ${value[0].accessInfo}</div>
                     ` : "";
 
                   let shownHappeningNow = false;
@@ -324,7 +326,7 @@
                                       </div>
                                       
                                       <div class="info float-left">${que.info}</div>
-                                      ${tabletopSim}
+                                      ${platform}
                                       </div>
                                         
                                       `
