@@ -108,7 +108,10 @@
       let DISP_FORMAT = 'MM/DD dddd hh:mm A';
       let date = (iDate == null ? moment(currentAdj).format(DATE_FORMAT) : moment(new Date(iDate)).format(DATE_FORMAT));
       let time = (iTime == null ? moment(currentAdj).format('HH:mm') : moment(new Date(date + ' ' + iTime)).format('HH:mm'));
-      let current = iTime ? moment(new Date(date + ' ' + time)) : moment(new Date(date));
+      let current = moment(new Date(date));
+      if ((!iTime && !iDate) || (iTime && iDate)) {
+        current = moment(new Date(date + ' ' + time));
+      }
       
       var firstEvents = new Map();
       
@@ -173,7 +176,6 @@
               }
               
             });
-            console.log(todayArray);
             
             
               if(room != null) {
