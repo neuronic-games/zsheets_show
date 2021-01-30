@@ -159,7 +159,7 @@
                 let date = new Date(data.start);
                 let dateKey = moment(date).format(DATE_FORMAT);
 
-                if (moment(new Date(data.end)) >= current && 
+                if (moment(new Date(data.end)) > current && 
                     dateKey == current.format(DATE_FORMAT)) {
                   // This event is for the given day, and is either happening now, or later in the day
                   todayArray.push(data);
@@ -232,7 +232,7 @@
 
                 let entries = Object.entries(output);
                 
-                let shownCount = 0;
+                let shownUpnextCount = 0;
                 let lastKey = "";
                 
                 $('.root').append(`${showCalLinks()}`);
@@ -255,8 +255,9 @@
                       <div class="tabletop-sim float-right">${value[0].platform} | ${value[0].accessInfo}</div>
                     ` : "";
 
-                  let shownHappeningNow = false;
-                  let shownHappening = 0;
+                  let isHappeningNowPresent = false;
+                  let shownHappeningNowCount = 0;
+                  let visibleCount = 0;
                     
                   $('.root').append(  
                       `
@@ -281,27 +282,31 @@
                               
                               let isPassed = moment(new Date(que.end)) <= current;
                               
-                              let hideEvent = (index > shownHappening);
+                              let hideEvent = (index > shownHappeningNowCount);
                               let showEvent = isHappeningNow || (isUpNext && !hideEvent);
+                              if (showEvent) {
+                                visibleCount++;
+                              }
                               
                               if (lastKey != key) {
-                                shownCount = 0;
-                                shownHappening = 0;
-                                shownHappeningNow = false;
+                                shownUpnextCount = 0;
+                                shownHappeningNowCount = 0;
+                                isHappeningNowPresent = false;
                               }
                               if (!isHappeningNow && isSameDay && isUpNext) {
-                                shownCount += 1;
+                                shownUpnextCount += 1;
                               }
-                              if (isHappeningNow && shownCount == 0) {
-                                shownHappeningNow = true;
-                                shownHappening += 1;
+                              if (isHappeningNow && shownUpnextCount == 0) {
+                                isHappeningNowPresent = true;
+                                shownHappeningNowCount += 1;
                               }
+                              
                               lastKey = key;
-                              // console.log(que.name, {isHappeningNow: isHappeningNow, isSameDay: isSameDay, isUpNext: isUpNext, isPassed: isPassed, shownCount: shownCount, hideEvent: hideEvent, showEvent: showEvent, shownHappening: shownHappening});
+                              // console.log(que.name, {isHappeningNow: isHappeningNow, isSameDay: isSameDay, isUpNext: isUpNext, isPassed: isPassed, visibleCount: visibleCount, shownUpnextCount: shownUpnextCount, hideEvent: hideEvent, showEvent: showEvent, shownHappeningNowCount: shownHappeningNowCount, length: value.length, index: index, hasMore: hasMore});
 
                                 return `
                                   
-                                  ${shownCount == 0 && isSameDay && isUpNext && !isHappeningNow ?
+                                  ${shownUpnextCount == 0 && isSameDay && isUpNext && !isHappeningNow ?
                                     `<h5 class="card-title ak_card_subtitle mt-3 ml-3">NO CURRENT EVENT ${index}</h5>`
                                     : ``
                                   }
@@ -313,11 +318,11 @@
                                      <div class="${ isHappeningNow && isSameDay ? 'card-body' : 'card-footer ak_card_footer' } ${hideEvent ? `hidden_card_${key.replace(/\s/g, '')}` : '' }" 
                                       style="${showEvent ? 'display:block' : 'display:none'}">
 
-                                      ${isHappeningNow && shownHappening < 2 && isSameDay ?
+                                      ${isHappeningNow && shownHappeningNowCount < 2 && isSameDay ?
                                         `<h5 class="card-title ak_card_subtitle mt-3">HAPPENING NOW</h5>`
                                         : ``
                                       }
-                                      ${!isHappeningNow && shownHappeningNow && isUpNext && isSameDay && shownCount == 1 ?
+                                      ${!isHappeningNow && isHappeningNowPresent && isUpNext && isSameDay && shownUpnextCount == 1 ?
                                         `<h5 class="card-title ak_card_subtitle mt-3">UP NEXT</h5>`
                                         : ``
                                       }
@@ -345,9 +350,10 @@
                             }).join('')
                         }
 
-                        ${value.length > 2 ?
+
+                        ${value.length > visibleCount ?
                         `<h6 class="text-center more">
-                          <span class="active ${key.replace(/\s/g, '')}" style="cursor:pointer"> ${ value.length > 2 ? `MORE` : '' }</span>
+                          <span class="active ${key.replace(/\s/g, '')}" style="cursor:pointer">MORE</span>
                         </h6>`
                         : '' }
                     ` )
