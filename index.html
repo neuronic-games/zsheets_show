@@ -100,6 +100,10 @@
       let room = findGetParameter('loc');
       let iDate = findGetParameter('date');
       let iTime = findGetParameter('time');
+      let urlid = findGetParameter('id');
+      let apiurl = "https://sheetdb.io/api/v1/"+ urlid;
+
+      console.log("urlID "+apiurl);
 
       // The event time is not UTC, so we will beed to use timeZoneOffset to find the correct time.
       let utc = new Date();
@@ -128,7 +132,7 @@
       $.ajax({
         // url: "https://api.jsonbin.io/b/5fa2a27dce4aa2289555af31/9",
          //url: "https://sheetdb.io/api/v1/kulkorgjwk4xf",
-         url: "https://sheetdb.io/api/v1/znun0icrmknw2",
+         url: apiurl,
         //url: "./data-metatopia-2020.json",
         cache: false,
         success: function(response){
@@ -281,7 +285,7 @@
                     }
                   })
 
-                  galleryCount=1
+                 // galleryCount=1
 
                 //console.log(value[Math.floor(Math.random()*value.length)]);
 
