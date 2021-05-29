@@ -13,6 +13,10 @@
     src: url("D-DINCondensed-Bold.ttf") format("woff")
 }
 
+html{
+    scroll-behavior: smooth;
+}
+
 .ak_card_header{
     font-family: 'DINBlack';
     border-radius: 0px !important;
@@ -39,7 +43,8 @@
 }
 
 div.desc {
-    padding: 15px;
+    font-family: 'DINRegular';
+    font-size: 10px;
     text-align: center;
   }
 
@@ -48,11 +53,14 @@ div.desc {
     border: 1px solid #ccc;
     float: left;
     display: inline;
+    width: 100px;
    
   }
 
   div.ak_gallery img {
     object-fit: cover;
+    padding-right: 1px;
+
    
   }
 
