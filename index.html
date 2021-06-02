@@ -274,11 +274,12 @@
                       ${randomSliderArray.map(function(galleryValue,index){
                       return`<div class="ak_gallery">
                           <img src="${galleryValue.images}" width="100" height="100">
-                          <div class="desc">${galleryValue.name}</div>
+                          <div class="ak_img_desc">${galleryValue.name}</div>
                        </div>`
                     })}
                     </div>
                     `
+
                   )
                 
                 for(let [index, [key, value]] of entries.entries()){

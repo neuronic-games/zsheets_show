@@ -42,7 +42,7 @@ html{
     flex-direction: row !important;
 }
 
-div.desc {
+.ak_img_desc {
     font-family: 'DINRegular';
     font-size: 10px;
     text-align: center;
