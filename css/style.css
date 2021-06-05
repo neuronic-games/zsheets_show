@@ -159,3 +159,30 @@ html{
 .tabletop-sim {
   color: #BE2131;
 }
+
+
+.offline-page {
+    padding: 0px;
+    width: auto;
+    max-width: 1000px;
+    display: flex;
+    margin: auto
+    ;
+    
+  }
+
+figure {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 40px;
+    margin-inline-end: 40px;
+    text-align: center !important;
+}
+
+.offline-icon{
+    display: inline-block;
+    width: 300px !important;
+  
+}
+
