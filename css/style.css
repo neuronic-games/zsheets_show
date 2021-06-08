@@ -44,8 +44,9 @@ html{
 
 .ak_img_desc {
     font-family: 'DINRegular';
-    font-size: 10px;
+    font-size: 14px;
     text-align: center;
+    padding-top: 1rem;
   }
 
 .ak_gallery {
@@ -109,7 +110,23 @@ html{
     border-left-width: 25px;
 }
 
-
+.modal-xl{
+    max-width: 1200px;
+    width: max-content;
+}
+.modal-dialog{
+    background-color: #ffffff;
+}
+.modal-image{
+    max-height: 90vh;
+}
+.close-modal{
+    position: absolute;
+    background-color: #ffffff;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
 @media(max-width:768px){
     .ak_date{
         color: #1D78BA;
@@ -179,10 +196,29 @@ figure {
     margin-inline-end: 40px;
     text-align: center !important;
 }
-
+.expect_ratio_images{
+    width: 100%;
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+}
+.ak_img_detail{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    max-height: 100%;
+}
 .offline-icon{
     display: inline-block;
     width: 300px !important;
   
+}
+.image_slider{
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+.slick-prev:before, .slick-next:before{
+    color: #000000;
 }
 
