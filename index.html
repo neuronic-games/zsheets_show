@@ -308,9 +308,8 @@
             return new Date(a.start) - new Date(b.start);
           });
 
-          let randomSliderArray = todayArrayNext.sort(
-            () => Math.random() - 0.5
-          );
+          var slideObjArr = [];
+          
 
           var output = sortedArray.reduce(function (result, value) {
             var location = value.location;
@@ -346,6 +345,17 @@
 
             let entries = Object.entries(output);
 
+            for (let [index, [key, value]] of entries.entries()){
+               slideObjArr.push(value[0]);
+              
+               //console.log("index:"+index  + " Key:"+ key + " value:"+ value)
+            } 
+           // console.log(slideObjArr);
+            let randomSliderArray = slideObjArr.sort(
+            () => Math.random() - 0.5
+             );
+            console.log(randomSliderArray);
+        
             let shownUpnextCount = 0;
             let lastKey = "";
 
@@ -354,6 +364,7 @@
             // add image slider
             $(".root").append(
               `
+               
                     <div class="mt-2 ak_img image_slider " >
                       ${randomSliderArray
                         .map(function (galleryValue, index) {
@@ -378,7 +389,7 @@
               arrows: true,
               infinite: false,
               speed: 300,
-              autoplay: false,
+              autoplay: true,
               slidesToShow: 7,
               slidesToScroll: 4,
               responsive: [
@@ -402,6 +413,10 @@
             });
             for (let [index, [key, value]] of entries.entries()) {
               color = colors[index % colors.length];
+
+              //slideObjArr.push(value[0]);
+              //console.log("index:"+index  + " Key:"+ key + " value:"+ value)
+             // console.log("index:"+index  + " Key:"+ key + " value:"+ value[0].url1)
 
               let button1 = value[0].url1
                 ? `                            
@@ -584,7 +599,6 @@
                                   `;
                             })
                             .join("")}
-
 
                         ${
                           value.length > visibleCount
