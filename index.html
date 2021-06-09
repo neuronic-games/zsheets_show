@@ -125,7 +125,8 @@
 
       function showCalLinks() {
         let today = new Date();
-        let links = `<a href="/events?date=${moment(today).format('MM/DD/YYYY')}&id=${urlid}">NOW</a>`;
+        //let links = `<a href="/events?date=${moment(today).format('MM/DD/YYYY')}&id=${urlid}">NOW</a>`;
+        let links = `<a href="/events?id=${urlid}">NOW</a>`;
         let sortedLinks = new Map(
           [...firstEvents.entries()].sort((a, b) => a[1] - b[1])
         );
@@ -598,7 +599,7 @@
                                       </div>
                                          `}
                                         
-                                        <span class="d-inline-block nay_des">${que.desc}</span>
+                                        <span class="d-inline-block ${!que.images?` ` : `nay_des`}">${que.desc}</span>
                                       </div>
                                      
                                      
