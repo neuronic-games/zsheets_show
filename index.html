@@ -204,7 +204,7 @@
         utc.getUTCSeconds()
       );
       let currentUtc = moment(currentUtcStr);
-      const timeZoneOffset = -5; // EDT
+      const timeZoneOffset = -4; // EDT
       let currentAdj = currentUtc.add(timeZoneOffset, "hours");
 
       let TIME_FORMAT = "MM/DD/YYYY HH:mm";
