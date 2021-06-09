@@ -124,7 +124,8 @@
       }
 
       function showCalLinks() {
-        let links = "<a href=/events>NOW</a>";
+        let today = new Date();
+        let links = `<a href="/events?date=${moment(today).format('MM/DD/YYYY')}&id=${urlid}">NOW</a>`;
         let sortedLinks = new Map(
           [...firstEvents.entries()].sort((a, b) => a[1] - b[1])
         );
@@ -354,7 +355,8 @@
             let randomSliderArray = slideObjArr.sort(
             () => Math.random() - 0.5
              );
-            console.log(randomSliderArray);
+
+            // console.log(randomSliderArray);
         
             let shownUpnextCount = 0;
             let lastKey = "";
@@ -364,11 +366,12 @@
             // add image slider
             $(".root").append(
               `
-               
-                    <div class="mt-2 ak_img image_slider " >
+                    <div class="mt-2 image_slider" >
                       ${randomSliderArray
                         .map(function (galleryValue, index) {
-                          return `<a class="px-2" href="#${galleryValue.location
+                          return `
+                          ${galleryValue.images? `
+                            <a class="px-2" href="#${galleryValue.location
                             .toLowerCase()
                             .replace(/\s/g, "")}">
                             <div class="expect_ratio_images">
@@ -376,8 +379,13 @@
                                 galleryValue.images
                               }" class="ak_img_detail">
                             </div>
-                            <div class="ak_img_desc">${galleryValue.name}</div>
-                            </a>`;
+                            <div class="ak_img_desc">${galleryValue.name}
+                            </div>
+                            </a>
+                            `: `
+                            
+                            `}
+                          `;
                         })
                         .join("")}
                   </div>
@@ -387,11 +395,11 @@
             $(".image_slider").slick({
               dots: false,
               arrows: true,
-              infinite: false,
+              infinite: true,
               speed: 300,
               autoplay: true,
               slidesToShow: 7,
-              slidesToScroll: 4,
+              slidesToScroll: 2,
               responsive: [
                 {
                   breakpoint: 1024,
@@ -569,14 +577,15 @@
                                         que.speakers
                                       }</b><br>
                                       <div class="ak_room_descp mt-3">
-                                        <img class="ak_desc_img" data-toggle="modal" data-target="#${que.name
+                                        ${!que.images?`
+                                         
+                                         ` : `
+                                         <img class="ak_desc_img" data-toggle="modal" data-target="#${que.name
                                         .toLowerCase()
                                         .replace(/\s/g, "")}" src=${
                                           que.images
                                         } />
-                                        ${que.desc}
-                                      </div>
-                                      <div class="modal fade" id="${que.name
+                                        <div class="modal fade" id="${que.name
                                         .toLowerCase()
                                         .replace(/\s/g, "")}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-xl" role="document">
@@ -587,6 +596,12 @@
                                           <span class="px-4 py-2 d-block">${que.name}</span>
                                         </div>
                                       </div>
+                                         `}
+                                        
+                                        <span class="d-inline-block nay_des">${que.desc}</span>
+                                      </div>
+                                     
+                                     
                                       <div class="info float-left">${
                                         que.info
                                       }</div>

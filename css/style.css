@@ -198,6 +198,8 @@ figure {
 }
 .expect_ratio_images{
     width: 100%;
+    min-width: 145px;
+    min-height: 145px;
     position: relative;
     padding-top: 100%;
     overflow: hidden;
@@ -221,4 +223,6 @@ figure {
 .slick-prev:before, .slick-next:before{
     color: #000000;
 }
-
+.nay_des{
+    width: calc(100% - 75px);
+}
