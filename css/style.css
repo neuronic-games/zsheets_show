@@ -4,7 +4,7 @@
 }
 
 @font-face {
-    font-family: "DINRegular";
+    font-family: "DINCondensed-Bold";
     src: url("DINMedium.ttf") format("woff")
 }
 
@@ -24,7 +24,7 @@ html{
 
 .ak_card_subtitle{
     color: #BE2131;
-    font-family: 'DINRegular';
+    font-family: 'DINCondensed-Bold';
     font-weight: lighter;
     margin-top: 1em;
 }
@@ -43,7 +43,7 @@ html{
 }
 
 .ak_img_desc {
-    font-family: 'DINRegular';
+    font-family: 'DINCondensed-Bold';
     font-size: 14px;
     text-align: center;
     padding-top: 1rem;
@@ -74,16 +74,16 @@ html{
 
 .ak_room_speaker{
     color: #1D78BA;
-    font-family: 'DINRegular';
+    font-family: 'DINCondensed-Bold';
 }
 
 .ak_room_descp{
-    font-family: 'DINRegular';
+    font-family: 'DINCondensed-Bold';
 }
 
 .ak_date{
     color: #1D78BA;
-    font-family: 'DINRegular';
+    font-family: 'DINCondensed-Bold';
     opacity: 0.9;
 }
 
@@ -130,7 +130,7 @@ html{
 @media(max-width:768px){
     .ak_date{
         color: #1D78BA;
-        font-family: 'DINRegular';
+        font-family: 'DINCondensed-Bold';
         opacity: 0.9;
         display: block;
         float: unset !important;
