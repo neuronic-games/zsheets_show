@@ -34,7 +34,7 @@ html{
     height: 70px;
     float: left;
     margin-right: 5px;
-    object-fit: contain;
+    object-fit: cover;
     
 }
 
