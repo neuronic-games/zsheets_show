@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Thu, 18 Oct 2021 15:00:00 GMT">
+    <meta http-equiv="EXPIRES" content="Thu, 25 Oct 2021 00:00:00 GMT">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -90,7 +90,7 @@
       function showCalLinks() {
         let today = new Date();
         //let links = `<a href="/events?date=${moment(today).format('MM/DD/YYYY')}&id=${urlid}">NOW</a>`;
-        let links = `<a href="/events?id=${urlid}">NOW</a>`;
+        let links = `<a href="/events?id=${urlid}${sheetParam}">NOW</a>`;
         let sortedLinks = new Map(
           [...firstEvents.entries()].sort((a, b) => a[1] - b[1])
         );
@@ -98,11 +98,7 @@
         sortedLinks.forEach((date, key) => {
           let day = moment(key).format("DD");
           links = links.concat(
-            " | <a href=/events?date=",
-            key,
-            "&id=",
-            urlid,
-            ">",
+            ` | <a href=/events?id=${urlid}&date=${key}${sheetParam}>`,
             day,
             "</a>"
           );
@@ -146,11 +142,18 @@
       // Locations in this list will be sorted first
       const locSorting = ["Twitch"];
 
+      let sheetParam = "";
       let room = findGetParameter("loc");
       let iDate = findGetParameter("date");
       let iTime = findGetParameter("time");
       let urlid = findGetParameter("id");
+      let sheet = findGetParameter("sheet");
       let apiurl = "https://sheetdb.io/api/v1/" + urlid;
+      if (sheet != "") {
+        // If the Google Sheet has multiple tabs, it has to be the first tab. If not, pass the name of the 'sheet'.
+        sheetParam = "&sheet=" + sheet;
+        apiurl += "?sheet=" + sheet;
+      }
 
       // The event time is not UTC, so we will beed to use timeZoneOffset to find the correct time.
       let utc = new Date();
@@ -194,10 +197,7 @@
       $(".image_id").css("display", "block");
 
       $.ajax({
-        // url: "https://api.jsonbin.io/b/5fa2a27dce4aa2289555af31/9",
-        //url: "https://sheetdb.io/api/v1/kulkorgjwk4xf",
         url: apiurl,
-        //url: "./data-metatopia-2020.json",
         cache: false,
         success: function (response) {
           $(".image_id").css("display", "none");
