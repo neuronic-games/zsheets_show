@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Thu, 25 Oct 2021 00:00:00 GMT">
+    <meta http-equiv="EXPIRES" content="Thu, 28 Oct 2021 00:00:00 GMT">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -87,6 +87,29 @@
         return url.protocol;
       }
 
+      function showDateLinks() {
+        let today = new Date();
+        let links = "";
+        let sortedLinks = new Map(
+          [...firstEvents.entries()].sort((a, b) => a[1] - b[1])
+        );
+		let sep = "";
+		
+        sortedLinks.forEach((date, key) => {
+          let day = moment(key).format("ddd");
+          links = links.concat(
+			sep,
+            `<a href=/events?id=${urlid}&date=${key}${sheetParam}>`,
+            day,
+            "</a>"
+          );
+		  sep = " | ";
+        });
+
+        let render = `${links}`;
+        return render;
+      }
+	  
       function showCalLinks() {
         let today = new Date();
         //let links = `<a href="/events?date=${moment(today).format('MM/DD/YYYY')}&id=${urlid}">NOW</a>`;
@@ -176,7 +199,7 @@
 
       let TIME_FORMAT = "MM/DD/YYYY HH:mm";
       let DATE_FORMAT = "MM/DD/YYYY";
-      let DISP_FORMAT = "MM/DD dddd hh:mm A";
+      let DISP_FORMAT = "MM/DD ddd hh:mm A";
       let date =
         iDate == null
           ? moment(currentAdj).format(DATE_FORMAT)
@@ -597,7 +620,9 @@
             $(".root").append(`${showCalLinks()}`);
             $(".root").append(
               ` <br><br><br>
-                  <h1 class="text-center">NO EVENTS</h1>
+                  <h1 class="text-center">NO EVENTS TODAY</h1>
+				  <div class="text-center">But you can find events for the following dates:</div>
+				  <div class="text-center">${showDateLinks()}</div>
                 `
             );
           }
