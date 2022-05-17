@@ -262,6 +262,9 @@
               accessInfo: q.AccessInfo,
             };
 
+            console.log(data.url1);
+            console.log("URL " + data.url1.indexOf("http"));
+
             // console.log("## " + data.images);
             // console.log("## " + data.images.lastIndexOf("id="));
             //console.log(
@@ -447,7 +450,8 @@
               //  "1_index:" + index + " Key:" + key + " value:" + value[0].url1
               // );
               //              var path = (value[0].url1)
-              if (value[0].url1.length > 0) {
+
+              /* if (value[0].url1.length > 0) {
                 if (
                   value[0].url1.indexOf("http://") === -1 ||
                   value[0].url1.indexOf("https://") === -1
@@ -455,6 +459,7 @@
                   value[0].url1 = "http://" + value[0].url1;
                 }
               }
+              */
 
               //if (urlString.indexOf('http://') === 0 || urlString.indexOf('https://') === 0)
 
