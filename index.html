@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Tue, 17 May 2022 00:00:00 GMT" />
+    <meta http-equiv="EXPIRES" content="Tue, 18 May 2022 00:00:00 GMT" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -207,7 +207,8 @@
         utc.getUTCSeconds()
       );
       let currentUtc = moment(currentUtcStr);
-      const timeZoneOffset = -5; // EDT
+      const timeZoneOffset = -4; // EDT
+      // const timeZoneOffset = -5; // EST
       let currentAdj = currentUtc.add(timeZoneOffset, "hours");
 
       let TIME_FORMAT = "MM/DD/YYYY HH:mm";
