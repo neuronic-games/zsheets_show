@@ -435,7 +435,7 @@
                     `
             );
 
-			const qrcode = new QRCode(document.getElementById('qrcode_1'), {
+			const qrcode = new QRCode(document.getElementById('qrcode_0'), {
 			  text: 'http://jindo.dev.naver.com/collie',
 			  width: 80,
 			  height: 80,
