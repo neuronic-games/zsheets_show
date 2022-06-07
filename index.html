@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Sat, 21 May 2022 10:00:00 GMT" />
+    <meta http-equiv="EXPIRES" content="Tue, 07 June 2022 14:25:00 GMT" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -18,7 +18,7 @@
   </head>
   <body>
     <div class="container mt-2 mb-5">
-      <div c></div>
+      <div></div>
       <div class="row">
         <div class="col-md-12 root"></div>
 		<div class="col-md-12 cardList"></div>
@@ -503,14 +503,20 @@
                     `
             );
 
-			const qrcode = new QRCode(document.getElementById('qrcode_1'), {
-			  text: 'http://jindo.dev.naver.com/collie',
-			  width: 100,
-			  height: 100,
-			  colorDark : '#000',
-			  colorLight : '#fff',
-			  correctLevel : QRCode.CorrectLevel.H
-			});	
+			// Creating QR Code
+			randomSliderArray.map(function (galleryValue, index) {
+				//console.log(galleryValue.url1)
+				//const qrcode = new QRCode(document.getElementById('qrcode_1'), {
+				const qrcode = new QRCode(document.getElementById('qrcode_' + index), {
+				//text: 'http://jindo.dev.naver.com/collie',
+				text: String(galleryValue.url1),
+				width: screen.orientation.type == 'landscape-primary' ? 100 : 150,
+				height: screen.orientation.type == 'landscape-primary' ? 100 : 150,
+				colorDark : '#000',
+				colorLight : '#fff',
+				correctLevel : QRCode.CorrectLevel.H
+				});	
+			})
 			
             $(".image_slider").slick({
               dots: false,
