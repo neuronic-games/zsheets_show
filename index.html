@@ -504,14 +504,23 @@
             );
 
 			// Creating QR Code
+			let regexp = /android|iphone|kindle|ipad/i;
+      		let isMobileDevice = regexp.test(navigator.userAgent);
 			randomSliderArray.map(function (galleryValue, index) {
-				//console.log(galleryValue.url1)
-				//const qrcode = new QRCode(document.getElementById('qrcode_1'), {
+				// to check screen landscape or potrait
+				var mql = window.matchMedia("(orientation: portrait)");
+				// If there are matches, we're in portrait
+				if(mql.matches && !isMobileDevice) {  
+					// Portrait orientation
+					var width = height = 150;
+				} else {  
+					// Landscape orientation
+					var width = height = 100;
+				}
 				const qrcode = new QRCode(document.getElementById('qrcode_' + index), {
-				//text: 'http://jindo.dev.naver.com/collie',
 				text: String(galleryValue.url1),
-				width: screen.orientation.type == 'landscape-primary' ? 100 : 150,
-				height: screen.orientation.type == 'landscape-primary' ? 100 : 150,
+				width: width,
+				height: height,
 				colorDark : '#000',
 				colorLight : '#fff',
 				correctLevel : QRCode.CorrectLevel.H
