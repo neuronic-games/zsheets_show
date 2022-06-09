@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Tue, 07 June 2022 14:25:00 GMT" />
+    <meta http-equiv="EXPIRES" content="Thu, 09 June 2022 21:00:00 GMT" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -11,9 +11,9 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="slick/slick.css" />
-    <link rel="stylesheet" href="slick/slick-theme.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://earshot.chat/events/slick/slick.css" />
+    <link rel="stylesheet" href="https://earshot.chat/events/slick/slick-theme.css" />
+    <link rel="stylesheet" href="https://earshot.chat/events/css/style.css" />
     <link rel="icon" type="image/x-icon" href="whoo-icon-01.png" />
   </head>
   <body>
@@ -471,9 +471,11 @@
                                         
                                         <span class="d-inline-block ${
                                           !galleryValue.images ? ` ` : `nay_des`
-                                        }">${truncateString(galleryValue.desc, 200)}</span>
+                                        }">${truncateString(galleryValue.desc, 180)}</span>
                                       </div>
-								<div class="ftr-info-text">
+								
+									</div>
+									<div class="ftr-info-text">
 									<div class="leftInfo">
 									  <div class="info float-left  w-100">${
 										galleryValue.info
@@ -487,7 +489,6 @@
 										<div class="barcode">	
 											<div id="qrcode${`_${index}`}"></div>
 										</div>
-									</div>
 									</div>
                             
 							</div>
@@ -504,11 +505,12 @@
             );
 
 			// Creating QR Code
-			let regexp = /android|iphone|kindle|ipad/i;
-      		let isMobileDevice = regexp.test(navigator.userAgent);
 			randomSliderArray.map(function (galleryValue, index) {
+				let regexp = /android|iphone|kindle|ipad/i;
+      		   let isMobileDevice = regexp.test(navigator.userAgent);
 				// to check screen landscape or potrait
 				var mql = window.matchMedia("(orientation: portrait)");
+
 				// If there are matches, we're in portrait
 				if(mql.matches && !isMobileDevice) {  
 					// Portrait orientation
