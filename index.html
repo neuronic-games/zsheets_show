@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Thu, 09 June 2022 21:00:00 GMT" />
+    <meta http-equiv="EXPIRES" content="Thu, 21 July 2022 10:00:00 GMT" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -11,12 +11,12 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://earshot.chat/events/slick/slick.css" />
-    <link rel="stylesheet" href="https://earshot.chat/events/slick/slick-theme.css" />
-    <link rel="stylesheet" href="https://earshot.chat/events/css/style.css" />
+    <link rel="stylesheet" href="slick/slick.css" />
+    <link rel="stylesheet" href="slick/slick-theme.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/x-icon" href="whoo-icon-01.png" />
   </head>
-  <body>
+  <body style="background-color: transparent;">
     <div class="container mt-2 mb-5">
       <div></div>
       <div class="row">
@@ -62,6 +62,7 @@
 
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script>
+	
 	function findGetParameter(parameterName) {
 		var result = null,
 			tmp = [];
@@ -73,6 +74,16 @@
 			if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
 			});
 		return result;
+	}
+	function findGetDefaultSheet(id) {
+		let sheet = ""
+		$.ajax({
+        url: apiListurl + id + '/sheets/',
+        cache: false,
+        success: function (response) {
+			sheet = response.sheets[0]
+		}})
+		return sheet
 	}
 
 	function showStatus(props) {
@@ -125,6 +136,1075 @@
 		return render;
 	}
 
+	let _timerClick = false
+	function timerClick() {
+		
+		_timerClick = true
+		//console.log("imageClick - ", $(".root")[0].getElementsByClassName('ak_card_timer')[0])
+		// Render page again without refresh
+		// Hide
+		if($(".root")[0].getElementsByClassName('ak_card_timer')[0] != undefined) {
+			$(".root")[0].getElementsByClassName('ak_card_timer')[0].style.display = 'none'
+
+			// Show
+			$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.display = 'block'
+			$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.display = 'block'
+		}
+		
+		// Animate Icon
+		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+			$(".root")[0].getElementsByClassName('float-left')[0].style.color = "red"
+		}
+		/* if (window.location.href.indexOf("mode=slideshow") != -1) {
+			// For slideshow mode
+			pulsateTime()
+			for(let i=0; i<randomSliderArray.length; i++) {
+				if(document.getElementById(i) !== null) {
+					document.getElementById(i).style.color = "red"
+				}
+			}
+		} */
+	}
+
+	function ResetTimerClick() {
+		if(_timerClick) {
+			_timerClick = false
+
+			pulsateTime()
+			// Animate Icon
+			
+			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+				$(".root")[0].getElementsByClassName('float-left')[0].style.color = "red"
+			}
+			/* if (window.location.href.indexOf("mode=slideshow") != -1) {
+				for(let i=0; i<randomSliderArray.length; i++) {
+					if(document.getElementById(i) !== null) {
+						document.getElementById(i).style.color = "red"
+					}
+				}
+			} */
+			return
+		} else {
+			//console.log("borderClick")
+			// Animate Icon
+			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+				$(".root")[0].getElementsByClassName('float-left')[0].style.color = "#222"
+			}
+			/* if (window.location.href.indexOf("mode=slideshow") != -1) {
+				for(let i=0; i<randomSliderArray.length; i++) {
+					if(document.getElementById(i) !== null) {
+						document.getElementById(i).style.color = "#222"
+					}
+				}
+			} */
+			// Hide
+			$(".root")[0].getElementsByClassName('ak_card_timer')[0].style.display = 'block'
+			// Show
+			$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.display = 'none'
+			$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.display = 'none'
+
+			if(current.format(DISP_FORMAT) != moment(new Date(date + " " + time)).format(DISP_FORMAT)) {
+				window.location.href = "/events?id="+urlid
+			}
+		}
+	}
+
+	function getUpdatedTime(_format) {
+		let utc = new Date();
+		let currentUtcStr = "".concat(
+		utc.getUTCFullYear(),
+		"/",
+		utc.getUTCMonth() + 1,
+		"/",
+		utc.getUTCDate(),
+		" ",
+		utc.getUTCHours(),
+		":",
+		utc.getUTCMinutes(),
+		":",
+		utc.getUTCSeconds()
+		);
+		let currentUtc = moment(currentUtcStr);
+		const timeZoneOffset = -4; // EDT
+		// const timeZoneOffset = -5; // EST
+		let currentAdj = currentUtc.add(timeZoneOffset, "hours");
+
+		let TIME_FORMAT = "MM/DD/YYYY HH:mm";
+		let DATE_FORMAT = "MM/DD/YYYY";
+		let DISP_FORMAT = "MM/DD ddd hh:mm A";
+		let date =
+		iDate == null
+		? moment(currentAdj).format(DATE_FORMAT)
+		: moment(new Date(iDate)).format(DATE_FORMAT);
+		let time =
+		iTime == null
+		? moment(currentAdj).format("HH:mm")
+		: moment(new Date(date + " " + iTime)).format("HH:mm");
+		let current = moment(new Date(date));
+		if ((!iTime && !iDate) || (iTime && iDate)) {
+		current = moment(new Date(date + " " + time));
+		}
+
+		return currentAdj.format(DISP_FORMAT).split(" ")[2]
+	}
+
+	function toHoursAndMinutes(totalMinutes) {
+		const minutes = totalMinutes % 60;
+		const hours = Math.floor(totalMinutes / 60);
+
+		return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
+	}
+
+	function padTo2Digits(num) {
+		return num.toString().padStart(2, '0');
+	}
+
+	function getUpdatedDate(_dateStr, _timeStr) {
+		/* apiurl = "https://sheetdb.io/api/v1/" + urlid;
+		sheetParam = "&sheet=" + sheet;
+		apiurl += "?sheet=" + sheet + "&date=" + _dateStr + "&time=" + (_timeStr).split(" ")[1];
+
+		alert(apiurl)
+		console.log(apiurl, " - Calling URL")
+
+		$.ajax({
+			url: apiurl,
+			cache: false,
+			success: function (response) { */
+				//console.log(response, " Called Data")
+				//////////////////////////////////////////////
+			if (window.location.href.indexOf("mode=slideshow") != -1) {
+				/* $(".expect_ratio_images").remove()
+				$(".card-index").remove()
+				$(".ftr-info-text").remove()
+				$("br").remove();
+				// Regenrate based on time filter
+				$(".image_id").css("display", "none");
+				var todayArray = [];
+				var todayArrayNext = [];
+				randomSliderArray = [];
+				//console.log(sliderData," - slidedata")
+          sliderData[0].forEach((q) => {
+            let data = {
+              code: q.Code,
+              name: q.Event,
+              speakers: q.Presenters,
+              desc: q.Description,
+              start: q.Start,
+              end: q.End,
+              info: q.Info,
+              location: q.Location,
+              capacity: q.Capacity,
+              count: q.Count,
+              images: q.Image,
+              status: q.Status,
+              link1: q.Link1,
+              url1: q.Url1,
+              link2: q.Link2,
+              url2: q.Url2,
+              platform: q.Platform,
+              accessInfo: q.AccessInfo,
+            };
+
+			//console.log($(".root")[0].getElementsByClassName('time')[0].innerHTML, " timer")
+
+			let currentTime = $(".root")[0].getElementsByClassName('time')[0].innerHTML
+			let resultDate = moment(currentTime, DISP_FORMAT);
+
+
+            if (data.images.includes("https://drive.google.com")) {
+              imgid = data.images.substr(
+                data.images.lastIndexOf("id="),
+                data.images.length - 1
+              );
+              data.images = "https://drive.google.com/uc?export=view&" + imgid;
+            }
+
+            if (data.location && data.name && data.start && data.end) {
+              let date = new Date(data.start);
+              let dateKey = moment(date).format(DATE_FORMAT);
+
+              if (
+                moment(new Date(data.end)) > currentTime &&
+                dateKey == current.format(DATE_FORMAT)
+              ) {
+                // This event is for the given day, and is either happening now, or later in the day
+                todayArray.push(data);
+              }
+
+              // Store the first events of the day to create a summary calendar link
+              if (firstEvents.has(dateKey)) {
+                if (date < firstEvents[dateKey]) {
+                  firstEvents.set(dateKey, date);
+                }
+              } else {
+                firstEvents.set(dateKey, date);
+              }
+            }
+			});
+
+			if (room != null) {
+            var todayArrayNext = todayArray.filter(
+              (item) => item.location.toLowerCase().indexOf(room) > -1
+            );
+          }
+
+          var todayArrayNext = room != null ? todayArrayNext : todayArray;
+          // var sortedArray  = todayArrayNext.sort((a,b) => new Date(a.start) - new Date(b.start));
+          var sortedArray = todayArrayNext.sort(function (a, b) {
+            const aLoc = locSorting.indexOf(a.location);
+            const bLoc = locSorting.indexOf(b.location);
+
+            if (aLoc == -1 && bLoc == -1) {
+              return new Date(a.start) - new Date(b.start);
+            }
+            if (aLoc == -1) {
+              return 1;
+            }
+            if (bLoc == -1) {
+              return -1;
+            }
+            return new Date(a.start) - new Date(b.start);
+          });
+
+          var slideObjArr = [];
+
+          var output = sortedArray.reduce(function (result, value) {
+            var location = value.location;
+            result[location] = result[location] || [];
+            result[location].push({
+              code: value.code,
+              name: value.name,
+              speakers: value.speakers,
+              desc: value.desc,
+              start: value.start,
+              end: value.end,
+              info: value.info,
+              location: value.location,
+              capacity: value.capacity,
+              images: value.images,
+              count: value.count,
+              status: value.status,
+              link1: value.link1,
+              url1: value.url1,
+              link2: value.link2,
+              url2: value.url2,
+              platform: value.platform,
+              accessInfo: value.accessInfo,
+            });
+            return result;
+          }, {});
+
+          if (
+            (Object.keys(output).length === 0 &&
+              output.constructor === Object) == false
+          ) {
+            var counter = "";
+
+            let entries = Object.entries(output);
+
+            for (let [index, [key, value]] of entries.entries()) {
+              slideObjArr.push(value[0]);
+
+              //console.log("index:"+index  + " Key:"+ key + " value:"+ value)
+            }
+            // console.log(slideObjArr);
+            randomSliderArray = slideObjArr.sort(() => Math.random() - 0.5);
+
+            // console.log(randomSliderArray);
+
+            let shownUpnextCount = 0;
+            let lastKey = "";
+
+            //$(".root").append(`${showCalLinks()}`);
+			function truncateString(str, num) {
+			  // If the length of str is less than or equal to num
+			  // just return str--don't truncate it.
+			  if (str.length <= num) {
+				return str
+			  }
+			  // Return str truncated with '...' concatenated to the end of str.
+			  return str.slice(0, num) + '...'
+			}
+
+            // add image slider
+            $(".root").append(
+              `
+                    <div class="mt-2 image_slider" >
+                      ${randomSliderArray
+                        .map(function (galleryValue, index) {
+                          return `
+                          ${
+                            galleryValue.images
+                              ? `
+							  <div class="slide_item">
+								<div class="top_head" onclick="ResetTimerClick()">
+									<div class="time" style="margin-left:30px" id=`+index+`>${current.format(DISP_FORMAT)}</div>
+									<div class="title">${galleryValue.location}</div>
+								</div>
+
+								<div class="expect_ratio_images">
+								  <img src="${
+									galleryValue.images
+								  }" class="ak_img_detail">
+								</div>
+								<div class="card-index">
+								<span class="card-text ak_room_title">${
+                                        galleryValue.code
+                                      } - ${galleryValue.name}</span>
+                                      <span>${showStatus(galleryValue)}</span>
+
+                                      <br>
+
+                                      <b class="speakers" style="color: black !important;">${
+                                        galleryValue.speakers
+                                      }</b><br>
+                                      <div class="ak_room_descp mt-3">
+
+                                        <span class="d-inline-block ${
+                                          !galleryValue.images ? ` ` : `nay_des`
+                                        }">${truncateString(galleryValue.desc, 180)}</span>
+                                      </div>
+
+									</div>
+									<div class="ftr-info-text">
+									<div class="leftInfo">
+									  <div class="info float-left  w-100">${
+										galleryValue.info
+									  }</div>
+									  <span class="float-left w-100 ak_date">${moment(
+										new Date(galleryValue.start)
+									  ).format("dddd hh:mm A")} - ${moment(
+										  new Date(galleryValue.end)
+										).format("hh:mm A")}</span>
+										</div>
+										<div class="barcode">
+											<div id="qrcode${`_${index}`}"></div>
+										</div>
+									</div>
+
+							</div>
+                            `
+                              : `
+
+                            `
+                          }
+                          `;
+                        })
+                        .join("")}
+                  </div>
+                    `
+            );
+
+			// Creating QR Code
+			randomSliderArray.map(function (galleryValue, index) {
+				let regexp = /android|iphone|kindle|ipad/i;
+      		   let isMobileDevice = regexp.test(navigator.userAgent);
+				// to check screen landscape or potrait
+				var mql = window.matchMedia("(orientation: portrait)");
+
+				// If there are matches, we're in portrait
+				if(mql.matches && !isMobileDevice) {
+					// Portrait orientation
+					var width = height = 150;
+				} else {
+					// Landscape orientation
+					var width = height = 100;
+				}
+				const qrcode = new QRCode(document.getElementById('qrcode_' + index), {
+				text: String(galleryValue.url1),
+				width: width,
+				height: height,
+				colorDark : '#000',
+				colorLight : '#fff',
+				correctLevel : QRCode.CorrectLevel.H
+				});
+			})
+
+            $(".image_slider").slick({
+              dots: false,
+              arrows: true,
+              infinite: true,
+              speed:400,
+			  autoplaySpeed: 10000,
+              autoplay: true,
+              slidesToShow: 1,
+			  adaptiveHeight:true,
+              slidesToScroll: 1
+            });
+            for (let [index, [key, value]] of entries.entries()) {
+              color = colors[index % colors.length];
+              let button1 = value[0].url1
+                ? `
+                    <a href=${`${value[0].url1}`} target="_blank">
+                      <button type="button" class="btn btn-outline-dark float-right">${
+                        value[0].link1
+                      }</button>
+                    </a>`
+                : "";
+
+              let button2 = value[0].url2
+                ? `
+                    <a href=${`${value[0].url2}`} target="_blank">
+                      <button type="button" class="btn btn-outline-dark float-right">${
+                        value[0].link2
+                      }</button>
+                    </a>`
+                : "";
+
+              let platform = value[0].platform
+                ? `
+                      <div class="tabletop-sim float-right">${value[0].platform} | ${value[0].accessInfo}</div>
+                    `
+                : "";
+
+              let isHappeningNowPresent = false;
+              let shownHappeningNowCount = 0;
+              let visibleCount = 0;
+
+            }
+          } else {
+            //$(".root").append(`${showCalLinks()}`);
+            $(".root").append(
+              ` <br><br><br>
+                  <h1 class="text-center">NO EVENTS TODAY</h1>
+      <div class="text-center">But you can find events for the following dates:</div>
+      <div class="text-center">${showDateLinks()}</div>
+                `
+            );
+          }
+
+          $(".active").click(function () {
+            var word = $(this).attr("class");
+
+            var lastword = word.replace("active", "");
+
+            var str = lastword.replace(/\s/g, "");
+
+            if ($.trim($("." + str).text()) === "MORE") {
+              $("." + str).text("LESS");
+            } else {
+              $("." + str).text("MORE");
+            }
+
+            $(`.hidden_card_${str}`).slideToggle();
+          }); */
+     
+			//////////////////////////
+			} // Slideshow Mode ends here
+			else {
+				$(".image_slider").remove()
+				$(".card.custom_border_left.mt-2").remove()
+				$(".text-center").remove()
+				$("br").remove();
+				$(".image_id").css("display", "none");
+				//return
+
+				 var todayArray = [];
+				var todayArrayNext = [];
+				randomSliderArray = [];
+
+				/* console.log(response.length, " LENGTH")
+
+				response.forEach((q) => {
+				let data = {
+					code: q.Code,
+					name: q.Event,
+					speakers: q.Presenters,
+					desc: q.Description,
+					start: q.Start,
+					end: q.End,
+					info: q.Info,
+					location: q.Location,
+					capacity: q.Capacity,
+					count: q.Count,
+					images: q.Image,
+					status: q.Status,
+					link1: q.Link1,
+					url1: q.Url1,
+					link2: q.Link2,
+					url2: q.Url2,
+					platform: q.Platform,
+					accessInfo: q.AccessInfo,
+				}; */
+
+				//console.log(sliderData, " >>> ")
+
+
+				let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+				let resultDate = moment(currentTime, DISP_FORMAT);
+				
+
+				sliderData[0].forEach((q) => {
+				let data = {
+					code: q.Code,
+					name: q.Event,
+					speakers: q.Presenters,
+					desc: q.Description,
+					start: q.Start,
+					end: q.End,
+					info: q.Info,
+					location: q.Location,
+					capacity: q.Capacity,
+					count: q.Count,
+					images: q.Image,
+					status: q.Status,
+					link1: q.Link1,
+					url1: q.Url1,
+					link2: q.Link2,
+					url2: q.Url2,
+					platform: q.Platform,
+					accessInfo: q.AccessInfo,
+				};
+
+				//console.log(data.url1);
+				//console.log("URL " + data.url1.indexOf("http"));
+
+				// console.log("## " + data.images);
+				// console.log("## " + data.images.lastIndexOf("id="));
+				//console.log(
+				// data.images.substr(
+				// data.images.lastIndexOf("id="),
+				// data.images.length - 1
+				//)
+				// );
+				if (data.images.includes("https://drive.google.com")) {
+					imgid = data.images.substr(
+					data.images.lastIndexOf("id="),
+					data.images.length - 1
+					);
+					data.images = "https://drive.google.com/uc?export=view&" + imgid;
+				}
+
+				// console.log("AKHM >> " + data.images);
+				//console.log(new Date(data.end), " ------------ ")
+
+				if (data.location && data.name && data.start && data.end) {
+					let date = new Date(data.start);
+					
+					let dateKey = moment(date).format(DATE_FORMAT);
+
+					//console.log(new Date(data.end))
+
+					//console.log(dateKey, " === ", moment(currentTime, DISP_FORMAT).format(DATE_FORMAT))
+
+					if (
+					moment(new Date(data.end)) > resultDate && /* dateKey == moment(currentTime, DISP_FORMAT).format(DATE_FORMAT) */
+					dateKey == current.format(DATE_FORMAT )
+					) {
+					// This event is for the given day, and is either happening now, or later in the day
+					todayArray.push(data);
+					}
+
+
+					// Store the first events of the day to create a summary calendar link
+					if (firstEvents.has(dateKey)) {
+					if (date < firstEvents[dateKey]) {
+						firstEvents.set(dateKey, date);
+					}
+					} else {
+					firstEvents.set(dateKey, date);
+					}
+				}
+				});
+
+				if (room != null) {
+				var todayArrayNext = todayArray.filter(
+					(item) => item.location.toLowerCase().indexOf(room) > -1
+				);
+				}
+
+				var todayArrayNext = room != null ? todayArrayNext : todayArray;
+				// var sortedArray  = todayArrayNext.sort((a,b) => new Date(a.start) - new Date(b.start));
+				var sortedArray = todayArrayNext.sort(function (a, b) {
+				const aLoc = locSorting.indexOf(a.location);
+				const bLoc = locSorting.indexOf(b.location);
+
+				if (aLoc == -1 && bLoc == -1) {
+					return new Date(a.start) - new Date(b.start);
+				}
+				if (aLoc == -1) {
+					return 1;
+				}
+				if (bLoc == -1) {
+					return -1;
+				}
+				return new Date(a.start) - new Date(b.start);
+				});
+
+				var slideObjArr = [];
+
+				var output = sortedArray.reduce(function (result, value) {
+				var location = value.location;
+				result[location] = result[location] || [];
+				result[location].push({
+					code: value.code,
+					name: value.name,
+					speakers: value.speakers,
+					desc: value.desc,
+					start: value.start,
+					end: value.end,
+					info: value.info,
+					location: value.location,
+					capacity: value.capacity,
+					images: value.images,
+					count: value.count,
+					status: value.status,
+					link1: value.link1,
+					url1: value.url1,
+					link2: value.link2,
+					url2: value.url2,
+					platform: value.platform,
+					accessInfo: value.accessInfo,
+				});
+				return result;
+				}, {});
+
+				if (
+				(Object.keys(output).length === 0 &&
+					output.constructor === Object) == false
+				) {
+				var counter = "";
+
+				let entries = Object.entries(output);
+
+				for (let [index, [key, value]] of entries.entries()) {
+					slideObjArr.push(value[0]);
+
+					//console.log("index:"+index  + " Key:"+ key + " value:"+ value)
+				}
+				// console.log(slideObjArr);
+				let randomSliderArray = slideObjArr.sort(() => Math.random() - 0.5);
+
+				// console.log(randomSliderArray);
+
+				let shownUpnextCount = 0;
+				let lastKey = "";
+
+				//$(".root").append(`${showCalLinks()}`);
+
+				// add image slider
+				$(".root").append(
+					`
+						<div class="mt-2 image_slider" >
+							${randomSliderArray
+							.map(function (galleryValue, index) {
+								return `
+								${
+								galleryValue.images
+									? `
+								<a class="px-2" href="#${galleryValue.location
+									.toLowerCase()
+									.replace(/\s/g, "")}">
+								<div class="expect_ratio_images">
+									<img src="${
+									galleryValue.images
+									}" class="ak_img_detail">
+								</div>
+								<div class="ak_img_desc">${galleryValue.name}
+								</div>
+								</a>
+								`
+									: `
+
+								`
+								}
+								`;
+							})
+							.join("")}
+						</div>
+						`
+				);
+
+				$(".image_slider").slick({
+					dots: false,
+					arrows: true,
+					infinite: true,
+					speed: 300,
+					autoplay: true,
+					slidesToShow: 7,
+					slidesToScroll: 2,
+					responsive: [
+					{
+						breakpoint: 1199,
+						settings: {
+						slidesToShow: 6,
+						slidesToScroll: 6,
+						infinite: true,
+						dots: true,
+						},
+					},
+					{
+						breakpoint: 999,
+						settings: {
+						slidesToShow: 5,
+						slidesToScroll: 5,
+						infinite: true,
+						dots: true,
+						},
+					},
+					{
+						breakpoint: 768,
+						settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3,
+						},
+					},
+					{
+						breakpoint: 568,
+						settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1,
+						},
+					},
+					]
+				});
+				for (let [index, [key, value]] of entries.entries()) {
+					color = colors[index % colors.length];
+
+					//slideObjArr.push(value[0]);
+					//console.log("index:"+index  + " Key:"+ key + " value:"+ value)
+					// console.log(
+					//  "1_index:" + index + " Key:" + key + " value:" + value[0].url1
+					// );
+					//              var path = (value[0].url1)
+
+					/* if (value[0].url1.length > 0) {
+					if (
+						value[0].url1.indexOf("http://") === -1 ||
+						value[0].url1.indexOf("https://") === -1
+					) {
+						value[0].url1 = "http://" + value[0].url1;
+					}
+					}
+					*/
+
+					//if (urlString.indexOf('http://') === 0 || urlString.indexOf('https://') === 0)
+
+					// console.log("akhm"+(path.isAbsolute));
+
+					let button1 = value[0].url1
+					? `
+						<a href=${`${value[0].url1}`} target="_blank">
+							<button type="button" class="btn btn-outline-light float-right mt-310">${
+							value[0].link1
+							}</button>
+						</a>`
+					: "";
+
+					let button2 = value[0].url2
+					? `
+						<a href=${`${value[0].url2}`} target="_blank">
+							<button type="button" class="btn btn-outline-light float-right mt-310">${
+							value[0].link2
+							}</button>
+						</a>`
+					: "";
+
+					let platform = value[0].platform
+					? `
+							<div class="tabletop-sim float-right">${value[0].platform} | ${value[0].accessInfo}</div>
+						`
+					: "";
+
+					let isHappeningNowPresent = false;
+					let shownHappeningNowCount = 0;
+					let visibleCount = 0;
+
+					$(".root").append(
+					`
+							<div class="card custom_border_left mt-2" style="border-left-color:#${color}">
+								<div class="card-header ak_card_header" style="background:#${color}">
+
+								<h4 class="card-room d-inline" id="${key
+									.toLowerCase()
+									.replace(/\s/g, "")}">${key}</h4>
+
+								${button2}
+								${button1}
+
+								</div>
+
+								${value
+								.map(function (que, index) {
+									let isHappeningNow =
+									current >= moment(new Date(que.start)) &&
+									current < moment(new Date(que.end));
+
+									let isSameDay =
+									current.format(DATE_FORMAT) ==
+									moment(new Date(que.start)).format(DATE_FORMAT);
+
+									let isUpNext =
+									moment(new Date(que.start)) >= current;
+
+									let isPassed =
+									moment(new Date(que.end)) <= current;
+
+									let hideEvent = index > shownHappeningNowCount;
+									let showEvent =
+									isHappeningNow || (isUpNext && !hideEvent);
+									if (showEvent) {
+									visibleCount++;
+									}
+
+									if (lastKey != key) {
+									shownUpnextCount = 0;
+									shownHappeningNowCount = 0;
+									isHappeningNowPresent = false;
+									}
+									if (!isHappeningNow && isSameDay && isUpNext) {
+									shownUpnextCount += 1;
+									}
+									if (isHappeningNow && shownUpnextCount == 0) {
+									isHappeningNowPresent = true;
+									shownHappeningNowCount += 1;
+									}
+
+									lastKey = key;
+									// console.log(que.name, {isHappeningNow: isHappeningNow, isSameDay: isSameDay, isUpNext: isUpNext, isPassed: isPassed, visibleCount: visibleCount, shownUpnextCount: shownUpnextCount, hideEvent: hideEvent, showEvent: showEvent, shownHappeningNowCount: shownHappeningNowCount, length: value.length, index: index, hasMore: hasMore});
+
+									return `
+
+										${
+										shownUpnextCount == 0 &&
+										isSameDay &&
+										isUpNext &&
+										!isHappeningNow
+											? `<h5 class="card-title ak_card_subtitle mt-3 ml-3">NO CURRENT EVENT ${index}</h5>`
+											: ``
+										}
+
+										${
+										!isPassed && isSameDay
+											? `${`
+										<div class="${
+											isHappeningNow && isSameDay
+											? "card-body"
+											: "card-footer ak_card_footer"
+										} ${
+												hideEvent
+												? `hidden_card_${key.replace(
+													/\s/g,
+													""
+													)}`
+												: ""
+											}"
+											style="${
+											showEvent
+												? "display:block"
+												: "display:none"
+											}"
+											id="
+											${que.name
+											.toLowerCase()
+											.replace(/\s/g, "")}
+											"
+											>
+
+											${
+											isHappeningNow &&
+											shownHappeningNowCount < 2 &&
+											isSameDay
+												? `<h5 class="card-title ak_card_subtitle mt-3">HAPPENING NOW</h5>`
+												: ``
+											}
+											${
+											!isHappeningNow &&
+											isHappeningNowPresent &&
+											isUpNext &&
+											isSameDay &&
+											shownUpnextCount == 1
+												? `<h5 class="card-title ak_card_subtitle mt-3">UP NEXT</h5>`
+												: ``
+											}
+
+											<span class="card-text ak_room_title">${
+											que.code
+											} - ${que.name}</span>
+											<span>${showStatus(que)}</span>
+											<span class="float-right ak_date">${moment(
+											new Date(que.start)
+											).format("dddd hh:mm A")} - ${moment(
+												new Date(que.end)
+											).format("hh:mm A")}</span>
+											<br>
+
+											<b style="color: black !important;">${
+											que.speakers
+											}</b><br>
+											<div class="ak_room_descp mt-3">
+											${
+												!que.images
+												? `
+
+											`
+												: `
+											<img class="ak_desc_img" data-toggle="modal" data-target="#${que.name
+												.toLowerCase()
+												.replace(/\s/g, "")}" src=${
+													que.images
+													} />
+											<div class="modal fade" id="${que.name
+												.toLowerCase()
+												.replace(
+												/\s/g,
+												""
+												)}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-xl" role="document">
+												<button type="button" class="close close-modal p-4" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+												<img src=${
+												que.images
+												} class="img-fluid modal-image" />
+												<span class="px-4 py-2 d-block">${
+												que.name
+												}</span>
+											</div>
+											</div>
+											`
+											}
+
+											<span class="d-inline-block ${
+												!que.images ? ` ` : `nay_des`
+											}">${que.desc}</span>
+											</div>
+
+
+											<div class="info float-left">${
+											que.info
+											}</div>
+											${platform}
+											</div>
+
+											`}`
+											: ``
+										}
+										`;
+								})
+								.join("")}
+
+							${
+								value.length > visibleCount
+								? `<h6 class="text-center more pb-3">
+								<span class="active ${key.replace(
+								/\s/g,
+								""
+								)}" style="cursor:pointer">MORE</span>
+							</h6>`
+								: ""
+							}
+						`
+					);
+				}
+				} else {
+				//$(".root").append(`${showCalLinks()}`);
+				$(".root").append(
+					` <br><br><br>
+						<h1 class="text-center">NO EVENTS TODAY</h1>
+				<div class="text-center">But you can find events for the following dates:</div>
+				<div class="text-center">${showDateLinks()}</div>
+					`
+				);
+				}
+
+				$(".active").click(function () {
+				var word = $(this).attr("class");
+
+				var lastword = word.replace("active", "");
+
+				var str = lastword.replace(/\s/g, "");
+
+				if ($.trim($("." + str).text()) === "MORE") {
+					$("." + str).text("LESS");
+				} else {
+					$("." + str).text("MORE");
+				}
+
+				$(`.hidden_card_${str}`).slideToggle();
+				});
+			}
+				///////////////////////////////////////////////
+			/* },
+		}) */
+	}
+
+	function timerPlusClick() {
+		_timerClick = true
+		if($(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity == 0.2) {return}
+		
+		let currentTime = ""
+		if (window.location.href.indexOf("mode=slideshow") != -1) {
+			//currentTime = $(".root")[0].getElementsByClassName('time')[0].innerHTML
+		} else {
+			currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+		}
+		let resultDate = moment(currentTime, DISP_FORMAT); // this will be valid moment date now
+		
+		if (window.location.href.indexOf("mode=slideshow") != -1) {
+			/* for(let i=0; i<randomSliderArray.length; i++) {
+				if(document.getElementById(i) !== null) {
+					document.getElementById(i).innerHTML = resultDate.add(30, 'minutes').format(DISP_FORMAT)
+				}
+			} */
+		} else {
+			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(30, 'minutes').format(DISP_FORMAT)
+		}
+		}
+
+		//setTimeout(function() {
+		// Format Date and Time
+		//console.log(resultDate.add(30, 'minutes').format(DISP_FORMAT), " sent date")
+		//let updatedTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+		let updatedResultDate = ""
+		if (window.location.href.indexOf("mode=slideshow") != -1) {
+			//updatedResultDate = moment($(".root")[0].getElementsByClassName('time')[0].innerHTML, DISP_FORMAT);
+		} else {
+			updatedResultDate = moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, DISP_FORMAT);
+		}
+		let lookupDate = updatedResultDate.format(DATE_FORMAT)
+		let lookupTime = updatedResultDate.format(ONLY_TIME_FORMAT)
+		//console.log(lookupDate, " ---- ", lookupTime)
+		getUpdatedDate(lookupDate, lookupTime)
+		//},3000)
+	}
+
+	function timerMinusClick() {
+		_timerClick = true
+		if($(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity == 0.2) {return}
+		
+		//let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+
+		let currentTime = ""
+		if (window.location.href.indexOf("mode=slideshow") != -1) {
+			//currentTime = $(".root")[0].getElementsByClassName('time')[0].innerHTML
+		} else {
+			currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+		}
+
+		let resultDate = moment(currentTime, DISP_FORMAT); // this will be valid moment date now
+		
+		if (window.location.href.indexOf("mode=slideshow") != -1) {
+			/* for(let i=0; i<randomSliderArray.length; i++) {
+				if(document.getElementById(i) !== null) {
+					document.getElementById(i).innerHTML = resultDate.add(-30, 'minutes').format(DISP_FORMAT)
+				}
+			} */
+		} else {
+			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(-30, 'minutes').format(DISP_FORMAT)
+		}
+		}
+
+		let updatedResultDate = moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, DISP_FORMAT);
+		let lookupDate = updatedResultDate.format(DATE_FORMAT)
+		let lookupTime = updatedResultDate.format(ONLY_TIME_FORMAT)
+		//console.log(lookupDate, " ---- ", lookupTime)
+		getUpdatedDate(lookupDate, lookupTime)
+	}
+
 	function showCalLinks() {
 		let today = new Date();
 		//let links = `<a href="/events?date=${moment(today).format('MM/DD/YYYY')}&id=${urlid}">NOW</a>`;
@@ -144,13 +1224,24 @@
 
 		let render = `
 			<div class="card custom_border_left mt-5" style="border-left-color:red">
-			<div class="card-header ak_card_header" style="background:#cccccc">
+				<div class="card-header ak_card_header" style="background:#cccccc" onclick="ResetTimerClick()">
+					<div class="card-header ak_card_timer">
+						<img id="editTimer" src="images/ear_icon_time.png" width="90px" height="90px" alt="" onclick="timerClick()" />
+					</div>
+					<div class="card-header ak_card_minus">
+						<img id="editTimer" src="images/ear_icon_minus.png" width="90px" height="90px" alt="" onclick="timerMinusClick()" />
+					</div>
+					
+					<div class="float-left" style="margin-left:40px">${current.format(DISP_FORMAT)}</div>
 
-				<div class="float-left">${currentAdj.format(DISP_FORMAT)}</div>
-				<div class="float-right">
-				${links}
+					<div class="card-header ak_card_plus">
+						<img id="editTimer" src="images/ear_icon_plus.png" width="90px" height="90px" alt="" onclick="timerPlusClick()" />
+					</div>
+
+					<div class="float-right">
+					${links}
+					</div>
 				</div>
-			</div>
 			</div>
 			`;
 		return render;
@@ -177,23 +1268,31 @@
 		"33cc99",
 	];
 
+
+	let sliderData = []
+	let mPulsateTimer = 0
+
 		// Locations in this list will be sorted first
+	
 	const locSorting = ["Twitch"];
 
 	let sheetParam = "";
 	let randomSliderArray = []
+	let apiListurl = "https://sheetdb.io/api/v1/"
 	let room = findGetParameter("loc");
 	let iDate = findGetParameter("date");
 	let iTime = findGetParameter("time");
 	let urlid = findGetParameter("id");
-	let sheet = findGetParameter("sheet");
+	let sheet = findGetParameter("sheet") == undefined ? findGetDefaultSheet(urlid) : findGetParameter("sheet");
 	let apiurl = "https://sheetdb.io/api/v1/" + urlid;
+	
+	
 	if (sheet != "") {
 		// If the Google Sheet has multiple tabs, it has to be the first tab. If not, pass the name of the 'sheet'.
 		sheetParam = "&sheet=" + sheet;
 		apiurl += "?sheet=" + sheet;
-	}
-
+	} 
+	
 	// The event time is not UTC, so we will beed to use timeZoneOffset to find the correct time.
 	let utc = new Date();
 	let currentUtcStr = "".concat(
@@ -217,6 +1316,8 @@
 	let TIME_FORMAT = "MM/DD/YYYY HH:mm";
 	let DATE_FORMAT = "MM/DD/YYYY";
 	let DISP_FORMAT = "MM/DD ddd hh:mm A";
+	let ONLY_TIME_FORMAT = "HH:mm";
+	let ONLY_MD_FORMAT = "MM/DD"
 	let date =
 	iDate == null
 		? moment(currentAdj).format(DATE_FORMAT)
@@ -256,7 +1357,7 @@
 		let DATE_FORMAT = "MM/DD/YYYY";
 		let DISP_FORMAT = "MM/DD ddd hh:mm A";
 		let date =
-		iDate == null
+		iDate == null || undefined || " "
 		? moment(currentAdj).format(DATE_FORMAT)
 		: moment(new Date(iDate)).format(DATE_FORMAT);
 		let time =
@@ -268,20 +1369,162 @@
 		current = moment(new Date(date + " " + time));
 		}
 
+		//console.log(current.format(TIME_FORMAT))
+		
+
 		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
-			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = currentAdj.format(DISP_FORMAT)
+			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = current.format(DISP_FORMAT)
 		}
 
 		if (window.location.href.indexOf("mode=slideshow") != -1) {
-			for(let i=0; i<randomSliderArray.length; i++) {
+			/* for(let i=0; i<randomSliderArray.length; i++) {
 				if(document.getElementById(i) !== null) {
-					document.getElementById(i).innerHTML = currentAdj.format(DISP_FORMAT)
+					document.getElementById(i).innerHTML = current.format(DISP_FORMAT)
 				}
-			}
+			} */
 		}
-		setTimeout(upDateTime, (1000));
+
+		// Show it in edit mode
+		if(current.format(DISP_FORMAT) === moment(new Date(date + " " + time)).format(DISP_FORMAT)) {
+			//console.log("same date") 
+		} else {
+			//console.log("diff date")
+			const getTimerDiv = setInterval(function() {
+				//console.log("calling")
+				if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+					clearInterval(getTimerDiv)
+					timerClick()
+					pulsateTime()
+				}
+			}, 100)
+			
+		}
+
+
+		setTimeout(setUpDateTime, (60*1000));
 	}
 	///////////////////////////////////////////////////
+
+	function setUpDateTime() {
+		let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+		let resultDate = moment(currentTime, DISP_FORMAT);
+		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(1, 'minutes').format(DISP_FORMAT)
+		}
+
+		if (window.location.href.indexOf("mode=slideshow") != -1) {
+			/* for(let i=0; i<randomSliderArray.length; i++) {
+				if(document.getElementById(i) !== null) {
+					document.getElementById(i).innerHTML = resultDate.add(1, 'minutes').format(DISP_FORMAT)
+				}
+			} */
+		}
+		setTimeout(setUpDateTime, (60*1000));
+
+		
+	}
+
+
+
+	function pulsateTime() {
+		if(mPulsateTimer != undefined) {
+			clearTimeout(mPulsateTimer)
+		}
+
+
+		// Enable disable button ( - + )
+		//console.log(moment(new Date(date + " " + time), DISP_FORMAT).format(DISP_FORMAT), " ----- ", moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, DISP_FORMAT).format(DISP_FORMAT))
+
+		/* let filterDate = moment(new Date(date + " " + time), "MM/DD").format("MM/DD")
+		let searchDate = moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, "MM/DD").format("MM/DD")
+
+		console.log(searchDate, " ---- ", filterDate)
+		
+		if (searchDate > filterDate) {
+			console.log('date is today or in future');
+		} else if (searchDate == filterDate) {
+			console.log('date is in the present');
+		} else {
+			console.log('date is in the past');
+		} */
+		
+
+		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+			//let filterDate = moment(new Date(date + " " + time), DISP_FORMAT).format(DISP_FORMAT)
+			let filterDate = current.format(ONLY_MD_FORMAT)
+			let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+			let resultDatePrev = moment(currentTime, DISP_FORMAT);
+			let resultDateMax = moment(currentTime, ONLY_MD_FORMAT).format(ONLY_MD_FORMAT);
+
+			let minSearchDate = resultDatePrev.add(-30, 'minutes').format(DISP_FORMAT)
+			//let maxsearchDate = resultDateMax.add(1, 'day').format(ONLY_MD_FORMAT)
+			//console.log(resultDate.add(-30, 'minutes').format(DISP_FORMAT), " RD")
+			//console.log(resultDateMax, " --- ", filterDate)
+
+			if(minSearchDate < filterDate) {
+				//console.log('previous date - Hide Previous button')
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 1
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 0.2
+				}
+			} else if(resultDateMax > filterDate) {
+				//console.log("outside search - Hide Next Button")
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 0.2
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
+				}
+			} else {
+				//console.log("inside - Show both buttons")
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 1
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
+				}
+			}
+
+
+			/* if(minsearchDate < filterDate) {
+				console.log("previous date")
+			} else if(maxsearchDate > filterDate) {
+				console.log("date Passed")
+			} else {
+				console.log("inside")
+			} */
+			
+
+			//, " ----- ", moment($(".root")[0].getElementsByClassName('float-left')[0], DISP_FORMAT).format(DISP_FORMAT)
+
+			
+			if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0].style.display == 'none') {return}
+			}
+			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+				if($(".root")[0].getElementsByClassName('float-left')[0].style.color == 'red') {
+					$(".root")[0].getElementsByClassName('float-left')[0].style.color = '#222'
+				} else {
+					$(".root")[0].getElementsByClassName('float-left')[0].style.color = 'red'
+				}
+			}
+			if (window.location.href.indexOf("mode=slideshow") != -1) {
+				/* for(let i=0; i<randomSliderArray.length; i++) {
+					if(document.getElementById(i) !== null) {
+						//console.log(document.getElementById(i), " elements")
+						if(document.getElementById(i).style.color == "red") {
+							document.getElementById(i).style.color = "#222"
+						} else {
+							document.getElementById(i).style.color = "red"
+						}
+					}
+				} */
+			}
+		}
+		mPulsateTimer = setTimeout(pulsateTime, (700));
+	}
 
 	var firstEvents = new Map();
 	var moreLess = "More";
@@ -297,6 +1540,9 @@
 
           var todayArray = [];
           var todayArrayNext = [];
+		  sliderData = []
+
+		  sliderData.push(response)
 
           response.forEach((q) => {
             let data = {
@@ -319,7 +1565,7 @@
               platform: q.Platform,
               accessInfo: q.AccessInfo,
             };
-            
+
             if (data.images.includes("https://drive.google.com")) {
               imgid = data.images.substr(
                 data.images.lastIndexOf("id="),
@@ -327,7 +1573,7 @@
               );
               data.images = "https://drive.google.com/uc?export=view&" + imgid;
             }
-          
+
             if (data.location && data.name && data.start && data.end) {
               let date = new Date(data.start);
               let dateKey = moment(date).format(DATE_FORMAT);
@@ -423,7 +1669,7 @@
 
             let shownUpnextCount = 0;
             let lastKey = "";
-			 		 
+
             //$(".root").append(`${showCalLinks()}`);
 			function truncateString(str, num) {
 			  // If the length of str is less than or equal to num
@@ -434,7 +1680,7 @@
 			  // Return str truncated with '...' concatenated to the end of str.
 			  return str.slice(0, num) + '...'
 			}
-			
+
             // add image slider
             $(".root").append(
               `
@@ -446,34 +1692,45 @@
                             galleryValue.images
                               ? `
 							  <div class="slide_item">
-								<div class="top_head">
-									<div class="time" id=`+index+`>${currentAdj.format(DISP_FORMAT)}</div>
+								<div class="top_head" onclick="ResetTimerClick()">
+									<!--div class="card-header ak_card_timer">
+										<img id="editTimer" src="images/ear_icon_time.png" width="70px" height="70px" alt="" onclick="timerClick()" />
+									</div>
+									<div class="card-header ak_card_minus">
+										<img id="editTimer" src="images/ear_icon_minus.png" width="70px" height="70px" alt="" onclick="timerMinusClick()" />
+									</div>
+
+									<div class="card-header ak_card_plus">
+										<img id="editTimer" src="images/ear_icon_plus.png" width="70px" height="70px" alt="" onclick="timerPlusClick()" />
+									</div-->
+									
+									<div class="time" style="margin-left:0px" id=`+index+`>${current.format(DISP_FORMAT)}</div>
 									<div class="title">${galleryValue.location}</div>
-								</div>  
-							  
+								</div>
+
 								<div class="expect_ratio_images">
 								  <img src="${
 									galleryValue.images
 								  }" class="ak_img_detail">
-								</div>	
+								</div>
 								<div class="card-index">
 								<span class="card-text ak_room_title">${
                                         galleryValue.code
                                       } - ${galleryValue.name}</span>
                                       <span>${showStatus(galleryValue)}</span>
-                                      
+
                                       <br>
 
                                       <b class="speakers" style="color: black !important;">${
                                         galleryValue.speakers
                                       }</b><br>
                                       <div class="ak_room_descp mt-3">
-                                        
+
                                         <span class="d-inline-block ${
                                           !galleryValue.images ? ` ` : `nay_des`
                                         }">${truncateString(galleryValue.desc, 180)}</span>
                                       </div>
-								
+
 									</div>
 									<div class="ftr-info-text">
 									<div class="leftInfo">
@@ -486,11 +1743,11 @@
 										  new Date(galleryValue.end)
 										).format("hh:mm A")}</span>
 										</div>
-										<div class="barcode">	
+										<div class="barcode">
 											<div id="qrcode${`_${index}`}"></div>
 										</div>
 									</div>
-                            
+
 							</div>
                             `
                               : `
@@ -512,10 +1769,10 @@
 				var mql = window.matchMedia("(orientation: portrait)");
 
 				// If there are matches, we're in portrait
-				if(mql.matches && !isMobileDevice) {  
+				if(mql.matches && !isMobileDevice) {
 					// Portrait orientation
 					var width = height = 150;
-				} else {  
+				} else {
 					// Landscape orientation
 					var width = height = 100;
 				}
@@ -526,9 +1783,9 @@
 				colorDark : '#000',
 				colorLight : '#fff',
 				correctLevel : QRCode.CorrectLevel.H
-				});	
+				});
 			})
-			
+
             $(".image_slider").slick({
               dots: false,
               arrows: true,
@@ -569,7 +1826,7 @@
               let isHappeningNowPresent = false;
               let shownHappeningNowCount = 0;
               let visibleCount = 0;
-			  
+
             }
           } else {
             //$(".root").append(`${showCalLinks()}`);
@@ -621,8 +1878,7 @@
         },
       });
 	} // Slideshow Mode ends here
-	else{
-
+	else {
 		  $.ajax({
 			url: apiurl,
 			cache: false,
@@ -631,6 +1887,9 @@
 
 			  var todayArray = [];
 			  var todayArrayNext = [];
+
+				sliderData = []
+		  		sliderData.push(response)
 
 			  response.forEach((q) => {
 				let data = {
@@ -654,8 +1913,8 @@
 				  accessInfo: q.AccessInfo,
 				};
 
-				console.log(data.url1);
-				console.log("URL " + data.url1.indexOf("http"));
+				//console.log(data.url1);
+				//console.log("URL " + data.url1.indexOf("http"));
 
 				// console.log("## " + data.images);
 				// console.log("## " + data.images.lastIndexOf("id="));
@@ -1137,10 +2396,8 @@
 			  );
 			},
 		  });
-	  
+
 	}
     </script>
-	
-
   </body>
 </html>
