@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="EXPIRES" content="Thu, 21 July 2022 10:00:00 GMT" />
+    <meta http-equiv="EXPIRES" content="Fri, 22 July 2022 10:00:00 GMT" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earshot Events</title>
     <link
@@ -208,6 +208,9 @@
 			}
 		}
 	}
+
+	let _initEventTime = ''
+	let _lastEventTime = ''
 
 	function getUpdatedTime(_format) {
 		let utc = new Date();
@@ -1150,8 +1153,8 @@
 			} */
 		} else {
 			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
-			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(30, 'minutes').format(DISP_FORMAT)
-		}
+				$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(30, 'minutes').format(DISP_FORMAT)
+			}
 		}
 
 		//setTimeout(function() {
@@ -1213,6 +1216,19 @@
 			[...firstEvents.entries()].sort((a, b) => a[1] - b[1])
 		);
 
+
+		//console.log(_initEventTime, " timer")
+		// current.format(DISP_FORMAT
+		//console.log(_initEventTime, " _initEventTime")
+		let initCurrentTime = ""
+		if(_initEventTime == "") {
+			initCurrentTime = current.format(DISP_FORMAT)
+		} else {
+			initCurrentTime = moment(_initEventTime).format(DISP_FORMAT)
+		}
+		
+		
+
 		sortedLinks.forEach((date, key) => {
 			let day = moment(key).format("DD");
 			links = links.concat(
@@ -1232,7 +1248,7 @@
 						<img id="editTimer" src="images/ear_icon_minus.png" width="90px" height="90px" alt="" onclick="timerMinusClick()" />
 					</div>
 					
-					<div class="float-left" style="margin-left:40px">${current.format(DISP_FORMAT)}</div>
+					<div class="float-left" style="margin-left:40px">${initCurrentTime}</div>
 
 					<div class="card-header ak_card_plus">
 						<img id="editTimer" src="images/ear_icon_plus.png" width="90px" height="90px" alt="" onclick="timerPlusClick()" />
@@ -1317,7 +1333,7 @@
 	let DATE_FORMAT = "MM/DD/YYYY";
 	let DISP_FORMAT = "MM/DD ddd hh:mm A";
 	let ONLY_TIME_FORMAT = "HH:mm";
-	let ONLY_MD_FORMAT = "MM/DD"
+	let ONLY_MD_FORMAT = "MM/DD HH:mm"
 	let date =
 	iDate == null
 		? moment(currentAdj).format(DATE_FORMAT)
@@ -1370,9 +1386,12 @@
 		}
 
 		//console.log(current.format(TIME_FORMAT))
+
+		
 		
 
 		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+			
 			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = current.format(DISP_FORMAT)
 		}
 
@@ -1382,64 +1401,67 @@
 					document.getElementById(i).innerHTML = current.format(DISP_FORMAT)
 				}
 			} */
-		}
-
-		// Show it in edit mode
-		if(current.format(DISP_FORMAT) === moment(new Date(date + " " + time)).format(DISP_FORMAT)) {
-			//console.log("same date") 
 		} else {
-			//console.log("diff date")
-			const getTimerDiv = setInterval(function() {
-				//console.log("calling")
-				if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
-					clearInterval(getTimerDiv)
-					timerClick()
-					pulsateTime()
-				}
-			}, 100)
-			
-		}
 
+			// Show it in edit mode
+			if(current.format(DISP_FORMAT) === moment(new Date(date + " " + time)).format(DISP_FORMAT)) {
+				//console.log("same date") 
+			} else {
+				//console.log("diff date")
+				const getTimerDiv = setInterval(function() {
+					//console.log("calling")
+					if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+						clearInterval(getTimerDiv)
+						if(_initEventTime != "") {
+							timerClick()
+							pulsateTime()
+						}
+					}
+				}, 100)
+				
+			}
+		}
 
 		setTimeout(setUpDateTime, (60*1000));
 	}
 	///////////////////////////////////////////////////
 
 	function setUpDateTime() {
-		let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
-		let resultDate = moment(currentTime, DISP_FORMAT);
-		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
-			$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(1, 'minutes').format(DISP_FORMAT)
-		}
-
+		
 		if (window.location.href.indexOf("mode=slideshow") != -1) {
 			/* for(let i=0; i<randomSliderArray.length; i++) {
 				if(document.getElementById(i) !== null) {
 					document.getElementById(i).innerHTML = resultDate.add(1, 'minutes').format(DISP_FORMAT)
 				}
 			} */
+		} else {
+			let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+			let resultDate = moment(currentTime, DISP_FORMAT);
+			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
+				$(".root")[0].getElementsByClassName('float-left')[0].innerHTML = resultDate.add(1, 'minutes').format(DISP_FORMAT)
+			}
+
+			//console.log("Called time update")
+			let updatedResultDate = moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, DISP_FORMAT);
+			let lookupDate = updatedResultDate.format(DATE_FORMAT)
+			let lookupTime = updatedResultDate.format(ONLY_TIME_FORMAT)
+			getUpdatedDate(lookupDate, lookupTime)
+
 		}
 		setTimeout(setUpDateTime, (60*1000));
-
-		
 	}
-
-
 
 	function pulsateTime() {
 		if(mPulsateTimer != undefined) {
 			clearTimeout(mPulsateTimer)
 		}
 
-
 		// Enable disable button ( - + )
 		//console.log(moment(new Date(date + " " + time), DISP_FORMAT).format(DISP_FORMAT), " ----- ", moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, DISP_FORMAT).format(DISP_FORMAT))
 
 		/* let filterDate = moment(new Date(date + " " + time), "MM/DD").format("MM/DD")
 		let searchDate = moment($(".root")[0].getElementsByClassName('float-left')[0].innerHTML, "MM/DD").format("MM/DD")
-
 		console.log(searchDate, " ---- ", filterDate)
-		
 		if (searchDate > filterDate) {
 			console.log('date is today or in future');
 		} else if (searchDate == filterDate) {
@@ -1453,10 +1475,93 @@
 			//let filterDate = moment(new Date(date + " " + time), DISP_FORMAT).format(DISP_FORMAT)
 			let filterDate = current.format(ONLY_MD_FORMAT)
 			let currentTime = $(".root")[0].getElementsByClassName('float-left')[0].innerHTML
+
+
+			///////////////////////////////////////////////////////////////////////////
+			// New Logic
+			/* let resultDateMax = moment(currentTime, DISP_FORMAT).format(DISP_FORMAT);
+			let resultDatePrev = moment(currentTime, DISP_FORMAT);
+			let resultDate = moment(_initEventTime, DISP_FORMAT).format(DISP_FORMAT);
+			let finalEventDate = moment(_lastEventTime, DISP_FORMAT)
+			let minSearchDate = resultDatePrev.add(-30, 'minutes').format(DISP_FORMAT)
+			let maxSearchDate = finalEventDate.add(-60, 'minutes').format(DISP_FORMAT) */
+
+
+			///////////////////////////////////////////////////////////////////////////
+
+			let cTime = moment(currentTime, ONLY_MD_FORMAT).format(ONLY_MD_FORMAT)
+			let curTime = moment(currentTime, DISP_FORMAT)
+			let _eventStartTime = moment(_initEventTime, ONLY_MD_FORMAT).format(ONLY_MD_FORMAT)
+			let _eventInitStartTime = moment(_initEventTime, ONLY_MD_FORMAT)
+			let _eventEndTime = moment(_lastEventTime, ONLY_MD_FORMAT)
+			let _minStartTime = _eventInitStartTime.add(-30, 'minutes').format(ONLY_MD_FORMAT)
+			let _maxStartTime = _eventEndTime.add(-90, 'minutes').format(ONLY_MD_FORMAT)
+
+			//console.log(cTime, " cTime ", _eventStartTime, " END ", _eventEndTime)
+			let compareTime = curTime.add(-30, 'minutes').format(ONLY_MD_FORMAT)
+			//console.log(_minStartTime, " --- ", cTime, " ST ", _eventStartTime)
+			//console.log(compareTime, " > ", _maxStartTime, " < ", _eventStartTime)
+
+			if(compareTime < _eventStartTime) {
+				//console.log("Prev Time")
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 1
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 0.2
+				} 
+			} else if(compareTime > _maxStartTime) {
+				//console.log("Outside range")
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 0.2
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
+				}
+			} else {
+				//console.log("Inside the bloack")
+				if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 1
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
+				}
+			}
+			///////////////////////////////////////////////////////////////////////////
+			//if(minSearchDate < resultDate) {
+				//console.log("LESS")
+				/* if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 1
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 0.2
+				} */
+			//} else if(resultDateMax > maxSearchDate) {
+				//console.log(resultDateMax, " ---- ", maxSearchDate)
+				//console.log("Greater")
+				/* if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 0.2
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
+				} */
+			//} else {
+				//console.log("BOTH")
+				/* if($(".root")[0].getElementsByClassName('ak_card_plus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_plus')[0].style.opacity = 1
+				}
+				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
+					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
+				} */
+			//}
+			//////////////////////////////////////////////////////////////////////////////////////////////
+			/* 
 			let resultDatePrev = moment(currentTime, DISP_FORMAT);
 			let resultDateMax = moment(currentTime, ONLY_MD_FORMAT).format(ONLY_MD_FORMAT);
-
 			let minSearchDate = resultDatePrev.add(-30, 'minutes').format(DISP_FORMAT)
+
+			//console.log(resultDate.format(DISP_FORMAT), " - ", minSearchDate)
+
 			//let maxsearchDate = resultDateMax.add(1, 'day').format(ONLY_MD_FORMAT)
 			//console.log(resultDate.add(-30, 'minutes').format(DISP_FORMAT), " RD")
 			//console.log(resultDateMax, " --- ", filterDate)
@@ -1485,7 +1590,8 @@
 				if($(".root")[0].getElementsByClassName('ak_card_minus')[0] != undefined) {
 					$(".root")[0].getElementsByClassName('ak_card_minus')[0].style.opacity = 1
 				}
-			}
+			} */
+			//////////////////////////////////////////////////////////////////////////////////////////////
 
 
 			/* if(minsearchDate < filterDate) {
@@ -1495,8 +1601,6 @@
 			} else {
 				console.log("inside")
 			} */
-			
-
 			//, " ----- ", moment($(".root")[0].getElementsByClassName('float-left')[0], DISP_FORMAT).format(DISP_FORMAT)
 
 			
@@ -1521,8 +1625,9 @@
 						}
 					}
 				} */
-			}
+			} 
 		}
+
 		mPulsateTimer = setTimeout(pulsateTime, (700));
 	}
 
@@ -1704,7 +1809,7 @@
 										<img id="editTimer" src="images/ear_icon_plus.png" width="70px" height="70px" alt="" onclick="timerPlusClick()" />
 									</div-->
 									
-									<div class="time" style="margin-left:0px" id=`+index+`>${current.format(DISP_FORMAT)}</div>
+									<div class="time" style="margin-left:0px" id=`+index+`>${currentAdj.format(DISP_FORMAT)}</div>
 									<div class="title">${galleryValue.location}</div>
 								</div>
 
@@ -1735,6 +1840,7 @@
 									<div class="ftr-info-text">
 									<div class="leftInfo">
 									  <div class="info float-left  w-100">${
+										/* moment(galleryValue.start, DISP_FORMAT).format(DISP_FORMAT) */
 										galleryValue.info
 									  }</div>
 									  <span class="float-left w-100 ak_date">${moment(
@@ -1934,6 +2040,7 @@
 
 				// console.log("AKHM >> " + data.images);
 
+				// Filter the date based on current day
 				if (data.location && data.name && data.start && data.end) {
 				  let date = new Date(data.start);
 				  let dateKey = moment(date).format(DATE_FORMAT);
@@ -2019,13 +2126,24 @@
 
 				for (let [index, [key, value]] of entries.entries()) {
 				  slideObjArr.push(value[0]);
-
 				  //console.log("index:"+index  + " Key:"+ key + " value:"+ value)
 				}
-				// console.log(slideObjArr);
+
+				//console.log(slideObjArr[slideObjArr.length-1].end);
+				////////////////////////////////////////////////////////////////////
+				// Storing todays event start and end of last event time
+				todayArray.sort(todayArray.start)
+				_initEventTime = todayArray[0].start
+				_lastEventTime = todayArray[todayArray.length-1].end
+				////////////////////////////////////////////////////////////////////
+
+				//console.log(_initEventTime, " IIII ", _lastEventTime)
+				//console.log(todayArray)
+				
 				let randomSliderArray = slideObjArr.sort(() => Math.random() - 0.5);
 
-				// console.log(randomSliderArray);
+				//console.log(randomSliderArray)
+				//console.log(slideObjArr)
 
 				let shownUpnextCount = 0;
 				let lastKey = "";
