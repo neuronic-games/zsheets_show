@@ -75,7 +75,7 @@
 			});
 		return result;
 	}
-	function findGetDefaultSheet(id) {
+	/* function findGetDefaultSheet(id) {
 		let sheet = ""
 		$.ajax({
         url: apiListurl + id + '/sheets/',
@@ -84,7 +84,7 @@
 			sheet = response.sheets[0]
 		}})
 		return sheet
-	}
+	} */
 
 	function showStatus(props) {
 		var capicity =
@@ -1294,20 +1294,23 @@
 
 	let sheetParam = "";
 	let randomSliderArray = []
-	let apiListurl = "https://sheetdb.io/api/v1/"
+	//let apiListurl = "https://sheetdb.io/api/v1/"
 	let room = findGetParameter("loc");
 	let iDate = findGetParameter("date");
 	let iTime = findGetParameter("time");
 	let urlid = findGetParameter("id");
-	let sheet = findGetParameter("sheet") == undefined ? findGetDefaultSheet(urlid) : findGetParameter("sheet");
-	let apiurl = "https://sheetdb.io/api/v1/" + urlid;
+	//let sheet = findGetParameter("sheet") == undefined ? findGetDefaultSheet(urlid) : findGetParameter("sheet");
+	//console.log(findGetParameter("sheet"), " sheetINIT")
+	let sheet = findGetParameter("sheet") == "" || findGetParameter("sheet") == null ? "null" : findGetParameter("sheet")
+
+	//let apiurl = "https://sheetdb.io/api/v1/" + urlid;
 	
 	
-	if (sheet != "") {
+	/* if (sheet != "") {
 		// If the Google Sheet has multiple tabs, it has to be the first tab. If not, pass the name of the 'sheet'.
 		sheetParam = "&sheet=" + sheet;
 		apiurl += "?sheet=" + sheet;
-	} 
+	}  */
 	
 	// The event time is not UTC, so we will beed to use timeZoneOffset to find the correct time.
 	let utc = new Date();
@@ -1638,7 +1641,10 @@
 	if (window.location.href.indexOf("mode=slideshow") != -1) {
 		document.body.classList.add('slideshow');
       	$.ajax({
-        url: apiurl,
+        //url: apiurl,
+		url: 'data.php',
+		type:'POST',
+		data:{'sheetId' : urlid, 'sheet' : sheet},
         cache: false,
         success: function (response) {
           $(".image_id").css("display", "none");
@@ -1647,9 +1653,14 @@
           var todayArrayNext = [];
 		  sliderData = []
 
-		  sliderData.push(response)
+		  var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
+		//console.log(b)
+		var dataResponse = JSON.parse(formatJSONString)
 
-          response.forEach((q) => {
+		  //sliderData.push(response)
+		  sliderData.push(dataResponse)
+
+          dataResponse.forEach((q) => {
             let data = {
               code: q.Code,
               name: q.Event,
@@ -1985,8 +1996,12 @@
       });
 	} // Slideshow Mode ends here
 	else {
+		console.log(sheet, " -- sheet--- ", urlid)
 		  $.ajax({
-			url: apiurl,
+			//url: apiurl,
+			url: 'data.php',
+            type:'POST',
+            data:{'sheetId' : urlid, 'sheet' : sheet},
 			cache: false,
 			success: function (response) {
 			  $(".image_id").css("display", "none");
@@ -1994,10 +2009,22 @@
 			  var todayArray = [];
 			  var todayArrayNext = [];
 
-				sliderData = []
-		  		sliderData.push(response)
+			  //console.log(response, " in response")
+			  //var data = JSON.parse(response)
+			  //console.log(response, " response")
+			  //return
+			  //var b = response.replace(/'/g, '"').replace(/"s/g, "'s").split(sheet)[1];
+			  var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
+			  //console.log(b)
+			  var dataResponse = JSON.parse(formatJSONString)
+			  //console.log(dataResponse)
+			  //return
 
-			  response.forEach((q) => {
+				sliderData = []
+				//sliderData.push(response)
+				sliderData.push(dataResponse)
+
+			  dataResponse.forEach((q) => {
 				let data = {
 				  code: q.Code,
 				  name: q.Event,
@@ -2018,6 +2045,9 @@
 				  platform: q.Platform,
 				  accessInfo: q.AccessInfo,
 				};
+
+				//console.log(data, " DATA")
+				//return
 
 				//console.log(data.url1);
 				//console.log("URL " + data.url1.indexOf("http"));
