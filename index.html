@@ -155,15 +155,6 @@
 		if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
 			$(".root")[0].getElementsByClassName('float-left')[0].style.color = "red"
 		}
-		/* if (window.location.href.indexOf("mode=slideshow") != -1) {
-			// For slideshow mode
-			pulsateTime()
-			for(let i=0; i<randomSliderArray.length; i++) {
-				if(document.getElementById(i) !== null) {
-					document.getElementById(i).style.color = "red"
-				}
-			}
-		} */
 	}
 
 	function ResetTimerClick() {
@@ -176,13 +167,7 @@
 			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
 				$(".root")[0].getElementsByClassName('float-left')[0].style.color = "red"
 			}
-			/* if (window.location.href.indexOf("mode=slideshow") != -1) {
-				for(let i=0; i<randomSliderArray.length; i++) {
-					if(document.getElementById(i) !== null) {
-						document.getElementById(i).style.color = "red"
-					}
-				}
-			} */
+			
 			return
 		} else {
 			//console.log("borderClick")
@@ -190,13 +175,7 @@
 			if($(".root")[0].getElementsByClassName('float-left')[0] != undefined) {
 				$(".root")[0].getElementsByClassName('float-left')[0].style.color = "#222"
 			}
-			/* if (window.location.href.indexOf("mode=slideshow") != -1) {
-				for(let i=0; i<randomSliderArray.length; i++) {
-					if(document.getElementById(i) !== null) {
-						document.getElementById(i).style.color = "#222"
-					}
-				}
-			} */
+			
 			// Hide
 			$(".root")[0].getElementsByClassName('ak_card_timer')[0].style.display = 'block'
 			// Show
@@ -1996,7 +1975,7 @@
       });
 	} // Slideshow Mode ends here
 	else {
-		console.log(sheet, " -- sheet--- ", urlid)
+		//console.log(sheet, " -- sheet--- ", urlid)
 		  $.ajax({
 			//url: apiurl,
 			url: 'data.php',
@@ -2014,15 +1993,14 @@
 			  //console.log(response, " response")
 			  //return
 			  //var b = response.replace(/'/g, '"').replace(/"s/g, "'s").split(sheet)[1];
-			  var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
-			  //console.log(b)
-			  var dataResponse = JSON.parse(formatJSONString)
-			  //console.log(dataResponse)
-			  //return
 
-				sliderData = []
-				//sliderData.push(response)
-				sliderData.push(dataResponse)
+			  var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
+			  var dataResponse = JSON.parse(formatJSONString)
+
+			  //console.log(dataResponse)
+			  sliderData = []
+			  //sliderData.push(response)
+			  sliderData.push(dataResponse)
 
 			  dataResponse.forEach((q) => {
 				let data = {

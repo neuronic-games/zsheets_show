@@ -5,26 +5,19 @@ import sys
 credFileName = "credentials.json"
 
 mServiceAccount = gspread.service_account(filename=credFileName)
-#mGoogleSheetId = "12BAQpZSq6quewIY7hp4ia54ysClTrCJc7CPBcmx2dIs"
 mGoogleSheetId = sys.argv[1].split('sheetname')[0]
 
-#gs = sa.open("Test_JSON")
+#Open the sheet based on sheet id passed
 mGoogleSheet = mServiceAccount.open_by_key(mGoogleSheetId)
 
-#if sys.argv[1] == "":
-#sheetName = mGoogleSheet.worksheets()[0].title
-if sys.argv[1].split('sheetname')[1] == "null":                   #checking if variable is None
+#checking if variable is None
+if sys.argv[1].split('sheetname')[1] == "null":                   
     sheetName = mGoogleSheet.worksheets()[0].title
 else :
     sheetName = sys.argv[1].split('sheetname')[1]
 
+# Getting the date from the mentioned sheet name
 mSelectedWorkSheet = mGoogleSheet.worksheet(sheetName)
 
 # Converting Data to Required JSON
 print(mSelectedWorkSheet.get_all_records())
-# for default sheet at 0
-#print(mGoogleSheet.worksheets()[0].title) 
-
-
-
-
