@@ -164,9 +164,9 @@
 		sliderData[0].forEach((q) => {
 		let data = {
 			code: q.Code,
-			name: q.Event,
+			name: q.Event.replace(/dqo/g, '"'),
 			speakers: q.Presenters,
-			desc: q.Description,
+			desc: q.Description.replace(/dqo/g, '"'),
 			start: q.Start,
 			end: q.End,
 			info: q.Info,
@@ -1162,9 +1162,9 @@
 				sliderData[0].forEach((q) => {
 				let data = {
 					code: q.Code,
-					name: q.Event,
+					name: q.Event.replace(/dqo/g, '"'),
 					speakers: q.Presenters,
-					desc: q.Description,
+					desc: q.Description.replace(/dqo/g, '"'),
 					start: q.Start,
 					end: q.End,
 					info: q.Info,
@@ -2181,15 +2181,29 @@
 		data:{'sheetId' : urlid, 'sheet' : sheet},
         cache: false,
         success: function (response) {
-          $(".image_id").css("display", "none");
 
-          var todayArray = [];
-          var todayArrayNext = [];
-		  sliderData = []
+		//console.log(response, " >>> response")
 
-		  var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
+        $(".image_id").css("display", "none");
+
+        var todayArray = [];
+        var todayArrayNext = [];
+		sliderData = []
+
+		/* var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s"); 
+		var dataResponse = JSON.parse(formatJSONString)*/
 		//console.log(b)
-		var dataResponse = JSON.parse(formatJSONString)
+		// New Formatting
+		var mResponseDQ = response.replace(/"/g, "dqo")
+		var mResponseSQ = mResponseDQ.replace(/'/g, '"')
+		var mResponseFS = mResponseSQ.replace(/\\"/g, "'")
+		var mResponseSQS = mResponseFS.replace(/"s/g, "'s")
+		var mResponseUDQ = mResponseSQS.replace(/: dqo/g, ':"')
+		var mResponseUDQQ = mResponseUDQ.replace(/dqo'/g, '",')
+		var mResponseUDQQC = mResponseUDQQ.replace(/ dqo,/g, '",')
+		var mResponseFinal = mResponseUDQQC.replace(/dqo, "/g, '", "')
+		var dataResponse = JSON.parse(mResponseFinal)
+
 
 		  //sliderData.push(response)
 		  sliderData.push(dataResponse)
@@ -2197,9 +2211,9 @@
           dataResponse.forEach((q) => {
             let data = {
               code: q.Code,
-              name: q.Event,
+              name: q.Event.replace(/dqo/g, '"'),
               speakers: q.Presenters,
-              desc: q.Description,
+              desc: q.Description.replace(/dqo/g, '"'),
               start: q.Start,
               end: q.End,
               info: q.Info,
@@ -2538,19 +2552,36 @@
             data:{'sheetId' : urlid, 'sheet' : sheet},
 			cache: false,
 			success: function (response) {
+			  //console.log(response, " >>>>> response")
 			  $(".image_id").css("display", "none");
-
 			  var todayArray = [];
 			  var todayArrayNext = [];
 
+				/* 
 			  //console.log(response, " in response")
 			  //var data = JSON.parse(response)
 			  //console.log(response, " response")
 			  //return
 			  //var b = response.replace(/'/g, '"').replace(/"s/g, "'s").split(sheet)[1];
+			  // Previous Formatting
+			  //var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
+				 */
 
-			  var formatJSONString = response.replace(/'/g, '"').replace(/"s/g, "'s");
-			  var dataResponse = JSON.parse(formatJSONString)
+			  // New Formatting
+			  var mResponseDQ = response.replace(/"/g, "dqo")
+			  var mResponseSQ = mResponseDQ.replace(/'/g, '"')
+			  var mResponseFS = mResponseSQ.replace(/\\"/g, "'")
+			  var mResponseSQS = mResponseFS.replace(/"s/g, "'s")
+			  var mResponseUDQ = mResponseSQS.replace(/: dqo/g, ':"')
+			  var mResponseUDQQ = mResponseUDQ.replace(/dqo'/g, '",')
+			  var mResponseUDQQC = mResponseUDQQ.replace(/ dqo,/g, '",')
+			  var mResponseFinal = mResponseUDQQC.replace(/dqo, "/g, '", "')
+			
+			  //console.log(mResponseFinal)
+			  //return
+
+			  //var dataResponse = JSON.parse(formatJSONString)
+			  var dataResponse = JSON.parse(mResponseFinal)
 
 			  //console.log(dataResponse)
 			  sliderData = []
@@ -2559,18 +2590,18 @@
 
 			  dataResponse.forEach((q) => {
 				let data = {
-				  code: q.Code,
-				  name: q.Event,
-				  speakers: q.Presenters,
-				  desc: q.Description,
+				  code: q.Code.replace(/dqo/g, '"'),
+				  name: q.Event.replace(/dqo/g, '"'),
+				  speakers: q.Presenters.replace(/dqo/g, '"'),
+				  desc: q.Description.replace(/dqo/g, '"'),
 				  start: q.Start,
 				  end: q.End,
-				  info: q.Info,
+				  info: q.Info.replace(/dqo/g, '"'),
 				  location: q.Location,
 				  capacity: q.Capacity,
 				  count: q.Count,
 				  images: q.Image,
-				  status: q.Status,
+				  status: q.Status.replace(/dqo/g, '"'),
 				  link1: q.Link1,
 				  url1: q.Url1,
 				  link2: q.Link2,
@@ -2579,20 +2610,21 @@
 				  accessInfo: q.AccessInfo,
 				};
 
-				//console.log(data, " DATA")
-				//return
+				/* 
+					//console.log(data, " DATA")
+					//return
+					//console.log(data.url1);
+					//console.log("URL " + data.url1.indexOf("http"));
+					// console.log("## " + data.images);
+					// console.log("## " + data.images.lastIndexOf("id="));
+					//console.log(
+					// data.images.substr(
+					// data.images.lastIndexOf("id="),
+					// data.images.length - 1
+					//)
+					// );
+ 				*/
 
-				//console.log(data.url1);
-				//console.log("URL " + data.url1.indexOf("http"));
-
-				// console.log("## " + data.images);
-				// console.log("## " + data.images.lastIndexOf("id="));
-				//console.log(
-				// data.images.substr(
-				// data.images.lastIndexOf("id="),
-				// data.images.length - 1
-				//)
-				// );
 				if (data.images.includes("https://drive.google.com")) {
 				  imgid = data.images.substr(
 					data.images.lastIndexOf("id="),
@@ -2602,7 +2634,6 @@
 				}
 
 				// console.log("AKHM >> " + data.images);
-
 				// Filter the date based on current day
 				if (data.location && data.name && data.start && data.end) {
 				  let date = new Date(data.start);
@@ -2652,7 +2683,6 @@
 			  });
 
 			  var slideObjArr = [];
-
 			  var output = sortedArray.reduce(function (result, value) {
 				var location = value.location;
 				result[location] = result[location] || [];
@@ -2712,8 +2742,6 @@
 				let lastKey = "";
 
 				$(".root").append(`${showCalLinks(todayArray.length)}`);
-
-				
 
 				// add image slider
 				$(".root").append(
